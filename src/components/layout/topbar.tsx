@@ -53,7 +53,10 @@ export function Topbar() {
           <Dropdown.Trigger>
             <button className="flex items-center gap-2.5 pl-3 pr-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
               <Avatar size="sm" className="w-8 h-8 shrink-0">
-                <Avatar.Image src={currentUser.imageUrl} alt={currentUser.name} />
+                <Avatar.Image
+                  src={currentUser.imageUrl}
+                  alt={currentUser.name}
+                />
                 <Avatar.Fallback>{currentUser.name.charAt(0)}</Avatar.Fallback>
               </Avatar>
               <div className="text-left hidden sm:block">
