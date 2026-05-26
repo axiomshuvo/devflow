@@ -2,7 +2,6 @@
 
 import {
   mockActivity,
-  mockIssues,
   mockProjects,
   mockUsers,
 } from "@/lib/mock-data";
@@ -148,7 +147,6 @@ export default function ProjectDetailPage({
     mockProjects.find((p) => p.id === projectId) ?? mockProjects[0];
   if (!project) notFound();
 
-  const projectIssues = mockIssues.filter((i) => i.projectId === project.id);
   const members = project.members ?? mockUsers.slice(0, 4);
 
   return (

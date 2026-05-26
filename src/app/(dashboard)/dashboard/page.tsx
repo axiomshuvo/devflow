@@ -57,9 +57,6 @@ const projectIconColors = [
 const projectIcons = ["🛍️", "</>", "📱", "🌐"];
 
 export default function DashboardPage() {
-  const myTasks = mockIssues
-    .filter((i) => i.assignee?.id === currentUser.id)
-    .slice(0, 5);
   const recentIssues = [...mockIssues]
     .sort(
       (a, b) =>

@@ -4,6 +4,7 @@ import { mockIssues, mockProjects, mockUsers } from "@/lib/mock-data";
 import { formatDate } from "@/lib/utils";
 import type { IssuePriority, IssueType } from "@/types";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { use, useRef, useState } from "react";
 import {
@@ -311,10 +312,6 @@ export default function EditIssuePage({
   }
 
   const selectedProject = mockProjects.find((p) => p.id === projectId)!;
-  const selectedType = ISSUE_TYPES.find((t) => t.value === issueType)!;
-  const selectedPriority = PRIORITIES.find((p) => p.value === priority)!;
-  const selectedStatus = STATUSES.find((s) => s.value === status)!;
-  const selectedAssignee = mockUsers.find((u) => u.id === assigneeId);
 
   function toggleLabel(id: string) {
     setSelectedLabels((prev) =>
@@ -614,10 +611,12 @@ export default function EditIssuePage({
                       const u = mockUsers.find((x) => x.id === id)!;
                       return (
                         <>
-                          <img
-                            src={u.imageUrl}
+                          <Image
+                            src={u.imageUrl ?? ""}
                             alt={u.name}
-                            className="w-5 h-5 rounded-full object-cover shrink-0"
+                            width={20}
+                            height={20}
+                            className="rounded-full object-cover shrink-0"
                           />
                           <span className="truncate">{u.name}</span>
                         </>
@@ -627,10 +626,12 @@ export default function EditIssuePage({
                       const u = mockUsers.find((x) => x.id === id)!;
                       return (
                         <span className="flex items-center gap-2">
-                          <img
-                            src={u.imageUrl}
+                          <Image
+                            src={u.imageUrl ?? ""}
                             alt={u.name}
-                            className="w-5 h-5 rounded-full object-cover shrink-0"
+                            width={20}
+                            height={20}
+                            className="rounded-full object-cover shrink-0"
                           />
                           <span className="truncate">{u.name}</span>
                         </span>
@@ -644,10 +645,12 @@ export default function EditIssuePage({
                     Reporter
                   </label>
                   <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 cursor-not-allowed">
-                    <img
-                      src={issue.reporter.imageUrl}
+                    <Image
+                      src={issue.reporter.imageUrl ?? ""}
                       alt={issue.reporter.name}
-                      className="w-5 h-5 rounded-full object-cover shrink-0"
+                      width={20}
+                      height={20}
+                      className="rounded-full object-cover shrink-0"
                     />
                     <span className="truncate">{issue.reporter.name}</span>
                   </div>

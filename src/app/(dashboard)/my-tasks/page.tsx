@@ -1,6 +1,7 @@
 "use client";
 
 import { currentUser, mockProjects } from "@/lib/mock-data";
+import Image from "next/image";
 import { useState } from "react";
 import {
   MdAdd,
@@ -218,10 +219,12 @@ function TaskCard({ task }: { task: Task }) {
       <div className="flex items-center gap-2">
         <PriorityPill priority={task.priority} />
         <DueDate date={task.dueDate} />
-        <img
+        <Image
           src={task.avatarUrl}
           alt="assignee"
-          className="w-6 h-6 rounded-full object-cover ml-auto shrink-0"
+          width={24}
+          height={24}
+          className="rounded-full object-cover ml-auto shrink-0"
         />
       </div>
     </div>
@@ -235,7 +238,7 @@ function BoardColumn({
   onAddTask,
 }: {
   col: Column;
-  onAddTask: (colId: string) => void;
+  onAddTask: () => void;
 }) {
   return (
     <div className="flex flex-col gap-3 w-72 shrink-0">
@@ -249,7 +252,7 @@ function BoardColumn({
         <div className="ml-auto flex items-center gap-1">
           <button
             type="button"
-            onClick={() => onAddTask(col.id)}
+            onClick={() => onAddTask()}
             className="w-6 h-6 flex items-center justify-center rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <MdAdd className="text-base" />
@@ -273,7 +276,7 @@ function BoardColumn({
       {/* Add task */}
       <button
         type="button"
-        onClick={() => onAddTask(col.id)}
+        onClick={() => onAddTask()}
         className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 px-1 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
       >
         <MdAdd className="text-base" />
@@ -293,13 +296,11 @@ export default function MyTasksPage() {
   const [priorityFilter, setPriorityFilter] = useState("All");
   const [projectOpen, setProjectOpen] = useState(false);
   const [priorityOpen, setPriorityOpen] = useState(false);
-  const [columns, setColumns] = useState(INITIAL_COLUMNS);
+  const [columns] = useState(INITIAL_COLUMNS);
 
-  function handleAddTask(colId: string) {
+  function handleAddTask() {
     toast.info("New task creation coming soon!");
   }
-
-  const totalTasks = columns.reduce((s, c) => s + c.tasks.length, 0);
 
   return (
     <div className="flex flex-col h-full">
