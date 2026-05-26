@@ -16,10 +16,10 @@ export function Topbar() {
   const [search, setSearch] = useState("");
 
   return (
-    <header className="h-[64px] bg-white border-b border-gray-200 flex items-center px-6 gap-4 shrink-0">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-6 gap-4 shrink-0">
       <div className="min-w-0 flex-1 flex items-center gap-6">
         {/* Search */}
-        <div className="w-full max-w-[380px] relative">
+        <div className="w-full max-w-95 relative">
           <MdSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg pointer-events-none" />
           <input
             type="text"

@@ -674,7 +674,7 @@ export default function CreateIssuePage() {
           </div>
 
           {/* ═══════════════ RIGHT SIDEBAR ═══════════════ */}
-          <div className="w-[320px] shrink-0 flex flex-col gap-5">
+          <div className="w-80 shrink-0 flex flex-col gap-5">
             {/* Status card */}
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <h3 className="text-sm font-semibold text-gray-900 mb-3">
@@ -769,7 +769,7 @@ export default function CreateIssuePage() {
       </form>
 
       {/* ── Fixed Bottom Bar ── */}
-      <div className="fixed bottom-0 left-[240px] right-0 bg-white border-t border-gray-200 px-6 py-4 flex items-center justify-between z-40">
+      <div className="fixed bottom-0 left-60 right-0 bg-white border-t border-gray-200 px-6 py-4 flex items-center justify-between z-40">
         <label className="flex items-center gap-2 cursor-pointer select-none">
           <input
             type="checkbox"

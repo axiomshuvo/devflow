@@ -357,7 +357,7 @@ export default function IssuesPage() {
       {/* ── Table ────────────────────────────────────────────────────────── */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[900px]">
+          <table className="w-full text-sm min-w-225">
             <thead>
               <tr className="border-b border-gray-100 bg-gray-50/70">
                 <th className="w-10 px-4 py-3">
@@ -369,7 +369,7 @@ export default function IssuesPage() {
                 <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   ID
                 </th>
-                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-[260px]">
+                <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider min-w-65">
                   Title
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -441,7 +441,7 @@ export default function IssuesPage() {
                           {issue.title}
                         </p>
                         {issue.description && (
-                          <p className="text-xs text-gray-400 mt-0.5 line-clamp-1 max-w-[280px]">
+                          <p className="text-xs text-gray-400 mt-0.5 line-clamp-1 max-w-70">
                             {issue.description}
                           </p>
                         )}

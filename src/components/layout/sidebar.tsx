@@ -40,7 +40,7 @@ export function Sidebar() {
     <aside
       className={cn(
         "flex flex-col h-screen bg-[#0f172a] border-r border-white/10 transition-all duration-300 shrink-0",
-        collapsed ? "w-[68px]" : "w-[240px]",
+        collapsed ? "w-17" : "w-60",
       )}
     >
       {/* Logo */}
