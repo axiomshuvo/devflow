@@ -178,9 +178,11 @@ export default function IssueDetailPage({
 
             {/* Action buttons */}
             <div className="flex items-center gap-2 mt-4">
-              <button className="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 hover:border-gray-300 transition-colors">
-                <MdEdit className="text-sm" /> Edit
-              </button>
+              <Link href={`/issues/${issueId}/edit`}>
+                <button className="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 hover:border-gray-300 transition-colors">
+                  <MdEdit className="text-sm" /> Edit
+                </button>
+              </Link>
               <button className="flex items-center gap-1.5 text-xs text-gray-600 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 hover:border-gray-300 transition-colors">
                 <MdLink className="text-sm" /> Copy Link
               </button>
