@@ -1,10 +1,10 @@
 import type {
-  User,
-  Project,
-  Issue,
-  Comment,
   ActivityLog,
+  Comment,
+  Issue,
   Notification,
+  Project,
+  User,
 } from "@/types";
 
 // ─── Users ────────────────────────────────────────────────────────────────────
@@ -61,7 +61,8 @@ export const mockProjects: Project[] = [
     id: "p1",
     name: "E-Commerce Website",
     key: "ECOM",
-    description: "Redesign and rebuild the main storefront with new checkout flow.",
+    description:
+      "Redesign and rebuild the main storefront with new checkout flow.",
     status: "ACTIVE",
     startDate: "2025-02-01T00:00:00Z",
     targetDate: "2025-06-30T00:00:00Z",
@@ -107,7 +108,8 @@ export const mockIssues: Issue[] = [
     projectKey: "ECOM",
     issueKey: "ECOM-1",
     title: "Fix checkout page crash on mobile Safari",
-    description: "The checkout page throws a JavaScript error on iOS Safari 16 when the user taps 'Place Order'. Stack trace attached.",
+    description:
+      "The checkout page throws a JavaScript error on iOS Safari 16 when the user taps 'Place Order'. Stack trace attached.",
     type: "BUG",
     status: "IN_PROGRESS",
     priority: "CRITICAL",
@@ -125,7 +127,8 @@ export const mockIssues: Issue[] = [
     projectKey: "ECOM",
     issueKey: "ECOM-2",
     title: "Add product image zoom feature",
-    description: "Implement pinch-to-zoom and click-to-zoom for product images on the detail page.",
+    description:
+      "Implement pinch-to-zoom and click-to-zoom for product images on the detail page.",
     type: "FEATURE",
     status: "TODO",
     priority: "MEDIUM",
@@ -143,14 +146,18 @@ export const mockIssues: Issue[] = [
     projectKey: "DAPI",
     issueKey: "DAPI-1",
     title: "Implement rate limiting on /issues endpoint",
-    description: "Add per-IP rate limiting (100 req/min) using Redis. Return 429 with Retry-After header.",
+    description:
+      "Add per-IP rate limiting (100 req/min) using Redis. Return 429 with Retry-After header.",
     type: "IMPROVEMENT",
     status: "IN_REVIEW",
     priority: "HIGH",
     dueDate: "2025-05-25T00:00:00Z",
     assignee: mockUsers[2],
     reporter: mockUsers[0],
-    labels: [{ id: "l3", name: "backend", color: "green" }, { id: "l4", name: "security", color: "orange" }],
+    labels: [
+      { id: "l3", name: "backend", color: "green" },
+      { id: "l4", name: "security", color: "orange" },
+    ],
     commentCount: 6,
     createdAt: "2025-05-08T11:00:00Z",
     updatedAt: "2025-05-18T16:00:00Z",
@@ -161,7 +168,8 @@ export const mockIssues: Issue[] = [
     projectKey: "DAPI",
     issueKey: "DAPI-2",
     title: "Write integration tests for auth routes",
-    description: "Cover login, register, refresh token and logout endpoints with Jest + Supertest.",
+    description:
+      "Cover login, register, refresh token and logout endpoints with Jest + Supertest.",
     type: "TASK",
     status: "BACKLOG",
     priority: "LOW",
