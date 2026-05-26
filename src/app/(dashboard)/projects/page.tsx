@@ -1,32 +1,37 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { Avatar, Button } from "@heroui/react";
-import {
-  MdAdd,
-  MdSearch,
-  MdFolder,
-  MdCalendarToday,
-  MdArrowForward,
-  MdOutlineGridView,
-  MdMoreVert,
-} from "react-icons/md";
 import { mockProjects, mockUsers } from "@/lib/mock-data";
 import { formatDateShort } from "@/lib/utils";
+import { Avatar, Button } from "@heroui/react";
+import Link from "next/link";
+import { useState } from "react";
+import {
+  MdAdd,
+  MdArrowForward,
+  MdCalendarToday,
+  MdFolder,
+  MdMoreVert,
+  MdOutlineGridView,
+  MdSearch,
+} from "react-icons/md";
 
 // ─── Status badge ─────────────────────────────────────────────────────────────
 
 function ProjectStatusBadge({ status }: { status: string }) {
   const map: Record<string, { cls: string; label: string }> = {
-    ACTIVE:    { cls: "bg-green-100 text-green-700",  label: "Active" },
-    ON_HOLD:   { cls: "bg-amber-100 text-amber-700",  label: "On Hold" },
-    COMPLETED: { cls: "bg-blue-100 text-blue-700",    label: "Completed" },
-    ARCHIVED:  { cls: "bg-gray-100 text-gray-500",    label: "Archived" },
+    ACTIVE: { cls: "bg-green-100 text-green-700", label: "Active" },
+    ON_HOLD: { cls: "bg-amber-100 text-amber-700", label: "On Hold" },
+    COMPLETED: { cls: "bg-blue-100 text-blue-700", label: "Completed" },
+    ARCHIVED: { cls: "bg-gray-100 text-gray-500", label: "Archived" },
   };
-  const { cls, label } = map[status] ?? { cls: "bg-gray-100 text-gray-500", label: status };
+  const { cls, label } = map[status] ?? {
+    cls: "bg-gray-100 text-gray-500",
+    label: status,
+  };
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${cls}`}>
+    <span
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${cls}`}
+    >
       {label}
     </span>
   );
@@ -36,19 +41,19 @@ function ProjectStatusBadge({ status }: { status: string }) {
 
 const projectIconMap: Record<string, { bg: string; emoji: string }> = {
   p1: { bg: "bg-purple-500", emoji: "🛍️" },
-  p2: { bg: "bg-blue-500",   emoji: "⚙️" },
-  p3: { bg: "bg-green-500",  emoji: "📱" },
+  p2: { bg: "bg-blue-500", emoji: "⚙️" },
+  p3: { bg: "bg-green-500", emoji: "📱" },
 };
 
 // ─── Status filters ────────────────────────────────────────────────────────────
 
 const STATUS_FILTERS = ["All", "Active", "On Hold", "Completed", "Archived"];
 const STATUS_KEY_MAP: Record<string, string> = {
-  All:       "",
-  Active:    "ACTIVE",
+  All: "",
+  Active: "ACTIVE",
   "On Hold": "ON_HOLD",
   Completed: "COMPLETED",
-  Archived:  "ARCHIVED",
+  Archived: "ARCHIVED",
 };
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -62,14 +67,15 @@ export default function ProjectsPage() {
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.description?.toLowerCase().includes(search.toLowerCase());
     const matchStatus =
-      !STATUS_KEY_MAP[statusFilter] || p.status === STATUS_KEY_MAP[statusFilter];
+      !STATUS_KEY_MAP[statusFilter] ||
+      p.status === STATUS_KEY_MAP[statusFilter];
     return matchSearch && matchStatus;
   });
 
   const stats = {
-    total:     mockProjects.length,
-    active:    mockProjects.filter((p) => p.status === "ACTIVE").length,
-    onHold:    mockProjects.filter((p) => p.status === "ON_HOLD").length,
+    total: mockProjects.length,
+    active: mockProjects.filter((p) => p.status === "ACTIVE").length,
+    onHold: mockProjects.filter((p) => p.status === "ON_HOLD").length,
     completed: mockProjects.filter((p) => p.status === "COMPLETED").length,
   };
 
@@ -94,16 +100,38 @@ export default function ProjectsPage() {
       {/* ── Quick stats ────────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Total Projects", value: stats.total,     color: "text-blue-600",   bg: "bg-blue-50"   },
-          { label: "Active",         value: stats.active,    color: "text-green-600",  bg: "bg-green-50"  },
-          { label: "On Hold",        value: stats.onHold,    color: "text-amber-600",  bg: "bg-amber-50"  },
-          { label: "Completed",      value: stats.completed, color: "text-purple-600", bg: "bg-purple-50" },
+          {
+            label: "Total Projects",
+            value: stats.total,
+            color: "text-blue-600",
+            bg: "bg-blue-50",
+          },
+          {
+            label: "Active",
+            value: stats.active,
+            color: "text-green-600",
+            bg: "bg-green-50",
+          },
+          {
+            label: "On Hold",
+            value: stats.onHold,
+            color: "text-amber-600",
+            bg: "bg-amber-50",
+          },
+          {
+            label: "Completed",
+            value: stats.completed,
+            color: "text-purple-600",
+            bg: "bg-purple-50",
+          },
         ].map((s) => (
           <div
             key={s.label}
             className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center gap-4"
           >
-            <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center shrink-0`}>
+            <div
+              className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center shrink-0`}
+            >
               <MdOutlineGridView className={`text-xl ${s.color}`} />
             </div>
             <div>
@@ -154,10 +182,17 @@ export default function ProjectsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
           {filtered.map((project) => {
-            const icon = projectIconMap[project.id] ?? { bg: "bg-gray-500", emoji: "📁" };
+            const icon = projectIconMap[project.id] ?? {
+              bg: "bg-gray-500",
+              emoji: "📁",
+            };
             const progress =
               (project.issueCount ?? 0) > 0
-                ? Math.round(((project.completedCount ?? 0) / (project.issueCount ?? 1)) * 100)
+                ? Math.round(
+                    ((project.completedCount ?? 0) /
+                      (project.issueCount ?? 1)) *
+                      100,
+                  )
                 : 0;
             const members = project.members ?? mockUsers.slice(0, 3);
 
@@ -200,7 +235,9 @@ export default function ProjectsPage() {
                 <div className="mb-4">
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-1.5">
                     <span>Progress</span>
-                    <span className="font-semibold text-gray-700">{progress}%</span>
+                    <span className="font-semibold text-gray-700">
+                      {progress}%
+                    </span>
                   </div>
                   <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
@@ -230,7 +267,11 @@ export default function ProjectsPage() {
                 <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
                   <div className="flex -space-x-2">
                     {members.slice(0, 5).map((m) => (
-                      <Avatar key={m.id} size="sm" className="w-7 h-7 ring-2 ring-white">
+                      <Avatar
+                        key={m.id}
+                        size="sm"
+                        className="w-7 h-7 ring-2 ring-white"
+                      >
                         <Avatar.Image src={m.imageUrl} alt={m.name} />
                         <Avatar.Fallback>{m.name.charAt(0)}</Avatar.Fallback>
                       </Avatar>

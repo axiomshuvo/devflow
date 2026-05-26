@@ -13,11 +13,11 @@ const statusConfig: Record<IssueStatus, { label: string; className: string }> =
     },
     IN_PROGRESS: {
       label: "In Progress",
-      className: "bg-amber-50 text-amber-600",
+      className: "bg-violet-50 text-violet-700",
     },
     IN_REVIEW: {
       label: "In Review",
-      className: "bg-purple-50 text-purple-600",
+      className: "bg-cyan-50 text-cyan-700",
     },
     DONE: {
       label: "Done",
