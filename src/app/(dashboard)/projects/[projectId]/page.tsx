@@ -14,11 +14,16 @@ import { use, useState } from "react";
 import {
   MdAdd,
   MdArrowForward,
+  MdAssignment,
   MdCalendarToday,
+  MdCheckCircleOutline,
   MdEdit,
+  MdErrorOutline,
   MdFolder,
   MdGroup,
+  MdHourglassBottom,
   MdMoreVert,
+  MdWarningAmber,
 } from "react-icons/md";
 import {
   Area,
@@ -198,7 +203,7 @@ export default function ProjectDetailPage({
           </div>
 
           {/* Right: actions */}
-          <div className="flex items-start gap-2 shrink-0 flex-col items-end">
+          <div className="flex flex-col items-end gap-2 shrink-0">
             <div className="flex items-center gap-2">
               <Link href={`/issues/create?projectId=${project.id}`}>
                 <Button
@@ -243,7 +248,7 @@ export default function ProjectDetailPage({
         <StatCard
           label="Total Issues"
           value={TOTAL}
-          icon={<span className="text-blue-600 text-lg">📋</span>}
+          icon={<MdAssignment className="text-blue-600 text-xl" />}
           iconBg="bg-blue-50"
           link={`/issues?projectId=${project.id}`}
         />
@@ -252,7 +257,7 @@ export default function ProjectDetailPage({
           value={45}
           sub="37.5% of total"
           subColor="text-orange-500"
-          icon={<span className="text-orange-500 text-lg">🔴</span>}
+          icon={<MdErrorOutline className="text-orange-500 text-xl" />}
           iconBg="bg-orange-50"
         />
         <StatCard
@@ -260,7 +265,7 @@ export default function ProjectDetailPage({
           value={28}
           sub="23.3% of total"
           subColor="text-amber-500"
-          icon={<span className="text-amber-500 text-lg">⏳</span>}
+          icon={<MdHourglassBottom className="text-amber-500 text-xl" />}
           iconBg="bg-amber-50"
         />
         <StatCard
@@ -268,7 +273,7 @@ export default function ProjectDetailPage({
           value={47}
           sub="39.2% of total"
           subColor="text-emerald-500"
-          icon={<span className="text-emerald-500 text-lg">✅</span>}
+          icon={<MdCheckCircleOutline className="text-emerald-500 text-xl" />}
           iconBg="bg-emerald-50"
         />
         <StatCard
@@ -276,7 +281,7 @@ export default function ProjectDetailPage({
           value={5}
           sub="4.2% of total"
           subColor="text-red-500"
-          icon={<span className="text-red-500 text-lg">⚠️</span>}
+          icon={<MdWarningAmber className="text-red-500 text-xl" />}
           iconBg="bg-red-50"
         />
       </div>
