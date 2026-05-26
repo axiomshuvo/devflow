@@ -1,53 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { PriorityBadge } from "@/components/shared/priority-badge";
+import { StatusBadge } from "@/components/shared/status-badge";
+import {
+  currentUser,
+  mockActivity,
+  mockComments,
+  mockIssues,
+} from "@/lib/mock-data";
+import { formatDateShort, formatRelativeDate } from "@/lib/utils";
+import { Avatar } from "@heroui/react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { use } from "react";
-import { Avatar } from "@heroui/react";
+import { use, useState } from "react";
 import {
   MdArrowBack,
   MdCalendarToday,
   MdEdit,
   MdFlag,
+  MdLabel,
   MdLink,
   MdMoreVert,
   MdOutlineComment,
+  MdOutlineTimer,
   MdPerson,
   MdSend,
-  MdLabel,
-  MdOutlineTimer,
 } from "react-icons/md";
-import { mockIssues, mockComments, mockActivity, currentUser } from "@/lib/mock-data";
-import { formatDateShort, formatRelativeDate } from "@/lib/utils";
-import { StatusBadge } from "@/components/shared/status-badge";
-import { PriorityBadge } from "@/components/shared/priority-badge";
-import type { IssueStatus, IssuePriority } from "@/types";
 
 // ─── Type icon map ────────────────────────────────────────────────────────────
 
 const typeConfig: Record<string, { label: string; cls: string }> = {
-  BUG:         { label: "Bug",         cls: "bg-red-100 text-red-700"    },
-  FEATURE:     { label: "Feature",     cls: "bg-blue-100 text-blue-700"  },
-  IMPROVEMENT: { label: "Improvement", cls: "bg-amber-100 text-amber-700"},
-  TASK:        { label: "Task",        cls: "bg-gray-100 text-gray-700"  },
+  BUG: { label: "Bug", cls: "bg-red-100 text-red-700" },
+  FEATURE: { label: "Feature", cls: "bg-blue-100 text-blue-700" },
+  IMPROVEMENT: { label: "Improvement", cls: "bg-amber-100 text-amber-700" },
+  TASK: { label: "Task", cls: "bg-gray-100 text-gray-700" },
 };
 
 // ─── Label chip ───────────────────────────────────────────────────────────────
 
 function LabelChip({ name, color }: { name: string; color?: string }) {
   const map: Record<string, string> = {
-    red:     "bg-red-50 text-red-600 border-red-200",
-    blue:    "bg-blue-50 text-blue-600 border-blue-200",
-    green:   "bg-green-50 text-green-700 border-green-200",
-    orange:  "bg-orange-50 text-orange-600 border-orange-200",
-    purple:  "bg-purple-50 text-purple-600 border-purple-200",
-    yellow:  "bg-yellow-50 text-yellow-700 border-yellow-200",
+    red: "bg-red-50 text-red-600 border-red-200",
+    blue: "bg-blue-50 text-blue-600 border-blue-200",
+    green: "bg-green-50 text-green-700 border-green-200",
+    orange: "bg-orange-50 text-orange-600 border-orange-200",
+    purple: "bg-purple-50 text-purple-600 border-purple-200",
+    yellow: "bg-yellow-50 text-yellow-700 border-yellow-200",
     default: "bg-gray-50 text-gray-600 border-gray-200",
   };
   const cls = map[color ?? "default"] ?? map.default;
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded border text-xs font-medium ${cls}`}>
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded border text-xs font-medium ${cls}`}
+    >
       {name}
     </span>
   );
@@ -55,7 +60,15 @@ function LabelChip({ name, color }: { name: string; color?: string }) {
 
 // ─── Sidebar field ────────────────────────────────────────────────────────────
 
-function SideField({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
+function SideField({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex items-start gap-3 py-2.5 border-b border-gray-100 last:border-0">
       <span className="text-gray-400 mt-0.5 shrink-0">{icon}</span>
@@ -69,10 +82,16 @@ function SideField({ icon, label, children }: { icon: React.ReactNode; label: st
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function IssueDetailPage({ params }: { params: Promise<{ issueId: string }> }) {
+export default function IssueDetailPage({
+  params,
+}: {
+  params: Promise<{ issueId: string }>;
+}) {
   const { issueId } = use(params);
   const [comment, setComment] = useState("");
-  const [activeTab, setActiveTab] = useState<"comments" | "activity">("comments");
+  const [activeTab, setActiveTab] = useState<"comments" | "activity">(
+    "comments",
+  );
 
   const issue = mockIssues.find((i) => i.id === issueId);
   if (!issue) notFound();
@@ -91,9 +110,13 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
           <MdArrowBack className="text-base" />
         </Link>
         <nav className="flex items-center gap-1.5 text-xs text-gray-400">
-          <Link href="/projects/p1" className="hover:text-blue-500">E-commerce Website</Link>
+          <Link href="/projects/p1" className="hover:text-blue-500">
+            E-commerce Website
+          </Link>
           <span>›</span>
-          <Link href="/issues" className="hover:text-blue-500">Issues</Link>
+          <Link href="/issues" className="hover:text-blue-500">
+            Issues
+          </Link>
           <span>›</span>
           <span className="text-gray-700 font-medium">{issue.issueKey}</span>
         </nav>
@@ -110,7 +133,9 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
               <span className="text-xs font-mono text-gray-500 bg-gray-100 px-2 py-0.5 rounded font-semibold">
                 {issue.issueKey}
               </span>
-              <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${typeCfg.cls}`}>
+              <span
+                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${typeCfg.cls}`}
+              >
                 {typeCfg.label}
               </span>
               <StatusBadge status={issue.status} size="sm" />
@@ -133,11 +158,14 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
                 Updated {formatRelativeDate(issue.updatedAt)}
               </span>
               {issue.dueDate && (
-                <span className={`flex items-center gap-1.5 ${
-                  new Date(issue.dueDate) < new Date() && issue.status !== "DONE"
-                    ? "text-red-500 font-medium"
-                    : ""
-                }`}>
+                <span
+                  className={`flex items-center gap-1.5 ${
+                    new Date(issue.dueDate) < new Date() &&
+                    issue.status !== "DONE"
+                      ? "text-red-500 font-medium"
+                      : ""
+                  }`}
+                >
                   <MdFlag className="text-sm" />
                   Due {formatDateShort(issue.dueDate)}
                 </span>
@@ -164,11 +192,17 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
 
           {/* Description */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-sm font-semibold text-gray-900 mb-3">Description</h2>
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">
+              Description
+            </h2>
             {issue.description ? (
-              <p className="text-sm text-gray-700 leading-relaxed">{issue.description}</p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {issue.description}
+              </p>
             ) : (
-              <p className="text-sm text-gray-400 italic">No description provided.</p>
+              <p className="text-sm text-gray-400 italic">
+                No description provided.
+              </p>
             )}
           </div>
 
@@ -199,18 +233,26 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
             {activeTab === "comments" ? (
               <div className="space-y-4">
                 {issueComments.length === 0 ? (
-                  <p className="text-sm text-gray-400 italic">No comments yet.</p>
+                  <p className="text-sm text-gray-400 italic">
+                    No comments yet.
+                  </p>
                 ) : (
                   issueComments.map((c) => (
                     <div key={c.id} className="flex gap-3">
                       <Avatar size="sm" className="w-8 h-8 shrink-0 mt-0.5">
                         <Avatar.Image src={c.user.imageUrl} alt={c.user.name} />
-                        <Avatar.Fallback>{c.user.name.charAt(0)}</Avatar.Fallback>
+                        <Avatar.Fallback>
+                          {c.user.name.charAt(0)}
+                        </Avatar.Fallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm font-semibold text-gray-800">{c.user.name}</span>
-                          <span className="text-xs text-gray-400">{formatRelativeDate(c.createdAt)}</span>
+                          <span className="text-sm font-semibold text-gray-800">
+                            {c.user.name}
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            {formatRelativeDate(c.createdAt)}
+                          </span>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-700 leading-relaxed border border-gray-100">
                           {c.body}
@@ -223,8 +265,13 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
                 {/* Comment input */}
                 <div className="flex gap-3 mt-4 pt-4 border-t border-gray-100">
                   <Avatar size="sm" className="w-8 h-8 shrink-0">
-                    <Avatar.Image src={currentUser.imageUrl} alt={currentUser.name} />
-                    <Avatar.Fallback>{currentUser.name.charAt(0)}</Avatar.Fallback>
+                    <Avatar.Image
+                      src={currentUser.imageUrl}
+                      alt={currentUser.name}
+                    />
+                    <Avatar.Fallback>
+                      {currentUser.name.charAt(0)}
+                    </Avatar.Fallback>
                   </Avatar>
                   <div className="flex-1 relative">
                     <textarea
@@ -256,7 +303,10 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
                         <span className="font-semibold">{a.user.name}</span>{" "}
                         {a.action}
                         {a.details && (
-                          <> — <span className="text-gray-500">{a.details}</span></>
+                          <>
+                            {" "}
+                            — <span className="text-gray-500">{a.details}</span>
+                          </>
                         )}
                       </p>
                       <p className="text-[11px] text-gray-400 mt-0.5">
@@ -289,10 +339,17 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
               {issue.assignee ? (
                 <div className="flex items-center gap-2">
                   <Avatar size="sm" className="w-6 h-6">
-                    <Avatar.Image src={issue.assignee.imageUrl} alt={issue.assignee.name} />
-                    <Avatar.Fallback>{issue.assignee.name.charAt(0)}</Avatar.Fallback>
+                    <Avatar.Image
+                      src={issue.assignee.imageUrl}
+                      alt={issue.assignee.name}
+                    />
+                    <Avatar.Fallback>
+                      {issue.assignee.name.charAt(0)}
+                    </Avatar.Fallback>
                   </Avatar>
-                  <span className="text-sm text-gray-700">{issue.assignee.name}</span>
+                  <span className="text-sm text-gray-700">
+                    {issue.assignee.name}
+                  </span>
                 </div>
               ) : (
                 <span className="text-sm text-gray-400">Unassigned</span>
@@ -302,10 +359,17 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
             <SideField icon={<MdPerson className="text-sm" />} label="Reporter">
               <div className="flex items-center gap-2">
                 <Avatar size="sm" className="w-6 h-6">
-                  <Avatar.Image src={issue.reporter.imageUrl} alt={issue.reporter.name} />
-                  <Avatar.Fallback>{issue.reporter.name.charAt(0)}</Avatar.Fallback>
+                  <Avatar.Image
+                    src={issue.reporter.imageUrl}
+                    alt={issue.reporter.name}
+                  />
+                  <Avatar.Fallback>
+                    {issue.reporter.name.charAt(0)}
+                  </Avatar.Fallback>
                 </Avatar>
-                <span className="text-sm text-gray-700">{issue.reporter.name}</span>
+                <span className="text-sm text-gray-700">
+                  {issue.reporter.name}
+                </span>
               </div>
             </SideField>
 
@@ -322,23 +386,39 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
             </SideField>
 
             {issue.dueDate && (
-              <SideField icon={<MdCalendarToday className="text-sm" />} label="Due Date">
-                <span className={`text-sm font-medium ${
-                  new Date(issue.dueDate) < new Date() && issue.status !== "DONE"
-                    ? "text-red-500"
-                    : "text-gray-700"
-                }`}>
+              <SideField
+                icon={<MdCalendarToday className="text-sm" />}
+                label="Due Date"
+              >
+                <span
+                  className={`text-sm font-medium ${
+                    new Date(issue.dueDate) < new Date() &&
+                    issue.status !== "DONE"
+                      ? "text-red-500"
+                      : "text-gray-700"
+                  }`}
+                >
                   {formatDateShort(issue.dueDate)}
                 </span>
               </SideField>
             )}
 
-            <SideField icon={<MdCalendarToday className="text-sm" />} label="Created">
-              <span className="text-sm text-gray-700">{formatDateShort(issue.createdAt)}</span>
+            <SideField
+              icon={<MdCalendarToday className="text-sm" />}
+              label="Created"
+            >
+              <span className="text-sm text-gray-700">
+                {formatDateShort(issue.createdAt)}
+              </span>
             </SideField>
 
-            <SideField icon={<MdCalendarToday className="text-sm" />} label="Updated">
-              <span className="text-sm text-gray-700">{formatDateShort(issue.updatedAt)}</span>
+            <SideField
+              icon={<MdCalendarToday className="text-sm" />}
+              label="Updated"
+            >
+              <span className="text-sm text-gray-700">
+                {formatDateShort(issue.updatedAt)}
+              </span>
             </SideField>
           </div>
 
@@ -349,7 +429,9 @@ export default function IssueDetailPage({ params }: { params: Promise<{ issueId:
             </h3>
             <div className="space-y-2">
               {mockIssues
-                .filter((i) => i.id !== issue.id && i.projectId === issue.projectId)
+                .filter(
+                  (i) => i.id !== issue.id && i.projectId === issue.projectId,
+                )
                 .slice(0, 3)
                 .map((rel) => (
                   <Link

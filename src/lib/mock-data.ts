@@ -233,7 +233,8 @@ export const mockIssues: Issue[] = [
     projectKey: "DAPI",
     issueKey: "DAPI-3",
     title: "Add pagination to /projects endpoint",
-    description: "Implement cursor-based pagination with limit and cursor query params.",
+    description:
+      "Implement cursor-based pagination with limit and cursor query params.",
     type: "IMPROVEMENT",
     status: "TODO",
     priority: "MEDIUM",
@@ -251,7 +252,8 @@ export const mockIssues: Issue[] = [
     projectKey: "ECOM",
     issueKey: "ECOM-5",
     title: "Fix broken image URLs on product cards",
-    description: "Product images return 404 in staging. Update CDN base URL in config.",
+    description:
+      "Product images return 404 in staging. Update CDN base URL in config.",
     type: "BUG",
     status: "IN_PROGRESS",
     priority: "HIGH",
@@ -272,7 +274,8 @@ export const mockIssues: Issue[] = [
     projectKey: "MOB",
     issueKey: "MOB-2",
     title: "Implement push notification support",
-    description: "Integrate Firebase Cloud Messaging for iOS and Android push notifications.",
+    description:
+      "Integrate Firebase Cloud Messaging for iOS and Android push notifications.",
     type: "FEATURE",
     status: "BACKLOG",
     priority: "LOW",
