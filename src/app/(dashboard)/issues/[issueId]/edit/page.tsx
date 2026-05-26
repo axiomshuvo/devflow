@@ -661,7 +661,7 @@ export default function EditIssuePage({
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Labels
                   </label>
-                  <div className="flex flex-wrap items-center gap-1.5 min-h-[38px] px-2 py-1.5 border border-gray-200 rounded-lg bg-white">
+                  <div className="flex flex-wrap items-center gap-1.5 min-h-9.5 px-2 py-1.5 border border-gray-200 rounded-lg bg-white">
                     {selectedLabels.map((id) => {
                       const l = ALL_LABELS.find((x) => x.id === id);
                       if (!l) return null;

@@ -112,8 +112,50 @@ export function Sidebar() {
         </div>
       )}
 
+      {/* Upcoming events — shown on /team */}
+      {!collapsed && pathname === "/team" && (
+        <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-white text-sm font-semibold">Upcoming</span>
+            <button
+              type="button"
+              className="text-blue-400 text-xs hover:text-blue-300 transition-colors"
+            >
+              View all
+            </button>
+          </div>
+          <div className="flex flex-col gap-2">
+            {[
+              {
+                dot: "bg-blue-400",
+                title: "Daily stand-up",
+                when: "Tomorrow, 10:00 AM",
+              },
+              {
+                dot: "bg-green-400",
+                title: "Sprint Planning",
+                when: "May 22, 11:00 AM",
+              },
+              {
+                dot: "bg-amber-400",
+                title: "Release Review",
+                when: "May 24, 02:00 PM",
+              },
+            ].map(({ dot, title, when }) => (
+              <div key={title} className="flex items-start gap-2">
+                <span className={`w-2 h-2 rounded-full ${dot} mt-1 shrink-0`} />
+                <div>
+                  <p className="text-white text-xs font-medium">{title}</p>
+                  <p className="text-slate-400 text-[10px]">{when}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Quick Create */}
-      {!collapsed && pathname !== "/my-tasks" && (
+      {!collapsed && pathname !== "/my-tasks" && pathname !== "/team" && (
         <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center">
