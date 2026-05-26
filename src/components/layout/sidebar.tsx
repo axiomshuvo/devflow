@@ -70,7 +70,7 @@ export function Sidebar() {
                   : "text-slate-400 hover:text-white hover:bg-white/5",
               )}
             >
-              <Icon className="text-[18px] shrink-0" />
+              <Icon className="text-lg shrink-0" />
               {!collapsed && <span>{label}</span>}
             </Link>
           );
