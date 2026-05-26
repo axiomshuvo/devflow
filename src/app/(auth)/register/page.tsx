@@ -54,10 +54,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="w-full max-w-[1060px] bg-white rounded-2xl shadow-xl overflow-hidden flex min-h-[760px]">
+    <div className="w-full max-w-265 bg-white rounded-2xl shadow-xl overflow-hidden flex min-h-190">
       {/* ── Left panel ─────────────────────────────────────────────────── */}
       <div
-        className="hidden md:flex md:w-[460px] shrink-0 flex-col p-10 relative overflow-hidden"
+        className="hidden md:flex md:w-115 shrink-0 flex-col p-10 relative overflow-hidden"
         style={{
           background: "linear-gradient(145deg, #1e2a78 0%, #0f172a 100%)",
         }}
@@ -230,7 +230,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Form area */}
-        <div className="max-w-[460px] w-full mx-auto">
+        <div className="max-w-115 w-full mx-auto">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900">
               Create your account 🚀

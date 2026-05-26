@@ -41,10 +41,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full max-w-[1060px] bg-white rounded-2xl shadow-xl overflow-hidden flex min-h-[680px]">
+    <div className="w-full max-w-265 bg-white rounded-2xl shadow-xl overflow-hidden flex min-h-170">
       {/* ── Left panel ─────────────────────────────────────────────────── */}
       <div
-        className="hidden md:flex md:w-[460px] shrink-0 flex-col p-10 relative overflow-hidden"
+        className="hidden md:flex md:w-115 shrink-0 flex-col p-10 relative overflow-hidden"
         style={{
           background: "linear-gradient(145deg, #1e2a78 0%, #0f172a 100%)",
         }}
@@ -197,7 +197,7 @@ export default function LoginPage() {
         </div>
 
         {/* Form area */}
-        <div className="flex-1 flex flex-col justify-center max-w-[400px] w-full mx-auto">
+        <div className="flex-1 flex flex-col justify-center max-w-100 w-full mx-auto">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900">
               Welcome back! 👋
