@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
+  MdAccessTime,
   MdAdd,
   MdBarChart,
   MdBugReport,
@@ -14,10 +15,13 @@ import {
   MdChevronLeft,
   MdChevronRight,
   MdDashboard,
+  MdFlag,
   MdFolder,
   MdGroup,
   MdHistory,
+  MdPerson,
   MdSettings,
+  MdTune,
 } from "react-icons/md";
 
 const navItems = [
@@ -77,8 +81,39 @@ export function Sidebar() {
         })}
       </nav>
 
+      {/* My Tasks quick filters */}
+      {!collapsed && pathname === "/my-tasks" && (
+        <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-white text-sm font-semibold">Filters</span>
+            <MdTune className="text-slate-400 text-base" />
+          </div>
+          <div className="flex flex-col gap-1">
+            {[
+              { icon: MdPerson, label: "Assigned to me", count: 12 },
+              { icon: MdPerson, label: "Created by me", count: 5 },
+              { icon: MdCalendarToday, label: "Due this week", count: 8 },
+              { icon: MdFlag, label: "High priority", count: 4 },
+              { icon: MdAccessTime, label: "Overdue", count: 2 },
+            ].map(({ icon: Icon, label, count }) => (
+              <button
+                key={label}
+                type="button"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors w-full text-left"
+              >
+                <Icon className="text-sm shrink-0" />
+                <span className="flex-1 text-xs">{label}</span>
+                <span className="text-xs font-semibold text-slate-300 bg-white/10 px-1.5 py-0.5 rounded-full">
+                  {count}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Quick Create */}
-      {!collapsed && (
+      {!collapsed && pathname !== "/my-tasks" && (
         <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
           <div className="flex items-center gap-2 mb-1">
             <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center">
