@@ -212,10 +212,18 @@ export default function ProjectDetailPage({
                 <MdMoreVert className="text-lg" />
               </button>
             </div>
-            <button className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600 border border-gray-200 rounded-lg px-3 py-1.5 hover:border-blue-300 transition-colors mt-1">
-              <MdEdit className="text-sm" />
-              Edit Project
-            </button>
+            <div className="flex items-center gap-2 mt-1">
+              <button className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600 border border-gray-200 rounded-lg px-3 py-1.5 hover:border-blue-300 transition-colors">
+                <MdEdit className="text-sm" />
+                Edit Project
+              </button>
+              <Link
+                href={`/projects/${project.id}/settings`}
+                className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-blue-600 border border-gray-200 rounded-lg px-3 py-1.5 hover:border-blue-300 transition-colors"
+              >
+                Settings
+              </Link>
+            </div>
           </div>
         </div>
 
