@@ -112,11 +112,36 @@ export function Sidebar() {
         </div>
       )}
 
-      {/* Upcoming events — shown on /team, /analytics and /activity */}
+      {/* Quick Create — calendar variant (New Task) */}
+      {!collapsed && pathname === "/calendar" && (
+        <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center">
+              <MdAdd className="text-blue-400 text-sm" />
+            </div>
+            <span className="text-white text-sm font-semibold">
+              Quick Create
+            </span>
+          </div>
+          <p className="text-slate-400 text-xs mb-3">
+            Create a new task in a few clicks.
+          </p>
+          <Button
+            size="sm"
+            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium"
+          >
+            <MdAdd className="text-base" />
+            New Task
+          </Button>
+        </div>
+      )}
+
+      {/* Upcoming events — shown on /team, /analytics, /activity and /calendar */}
       {!collapsed &&
         (pathname === "/team" ||
           pathname === "/analytics" ||
-          pathname === "/activity") && (
+          pathname === "/activity" ||
+          pathname === "/calendar") && (
           <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
             <div className="flex items-center justify-between mb-3">
               <span className="text-white text-sm font-semibold">Upcoming</span>
@@ -159,12 +184,13 @@ export function Sidebar() {
           </div>
         )}
 
-      {/* Quick Create */}
+      {/* Quick Create — default variant (New Issue) */}
       {!collapsed &&
         pathname !== "/my-tasks" &&
         pathname !== "/team" &&
         pathname !== "/analytics" &&
-        pathname !== "/activity" && (
+        pathname !== "/activity" &&
+        pathname !== "/calendar" && (
           <div className="mx-3 mb-4 p-3 rounded-xl bg-white/5 border border-white/10">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center">
