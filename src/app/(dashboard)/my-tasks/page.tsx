@@ -47,9 +47,9 @@ const INITIAL_COLUMNS: Column[] = [
       {
         id: "t1",
         title: "Fix login redirect bug",
-        project: "E-Commerce Website",
+        project: "DevFlow API",
         priority: "Medium",
-        dueDate: "2024-05-25",
+        dueDate: "2026-05-28",
         avatarUrl: avatar,
       },
       {
@@ -57,15 +57,15 @@ const INITIAL_COLUMNS: Column[] = [
         title: "Add product search functionality",
         project: "E-Commerce Website",
         priority: "High",
-        dueDate: "2024-05-28",
+        dueDate: "2026-05-30",
         avatarUrl: avatar,
       },
       {
         id: "t3",
         title: "Update documentation",
-        project: "E-Commerce Website",
+        project: "Mobile App",
         priority: "Low",
-        dueDate: "2024-05-30",
+        dueDate: "2026-06-02",
         avatarUrl: avatar,
       },
       {
@@ -73,15 +73,15 @@ const INITIAL_COLUMNS: Column[] = [
         title: "Fix cart quantity issue",
         project: "E-Commerce Website",
         priority: "High",
-        dueDate: "2024-05-17",
+        dueDate: "2026-05-26",
         avatarUrl: avatar,
       },
       {
         id: "t5",
         title: "Implement wishlist feature",
-        project: "E-Commerce Website",
+        project: "DevFlow API",
         priority: "Medium",
-        dueDate: "2024-05-28",
+        dueDate: "2026-06-05",
         avatarUrl: avatar,
       },
     ],
@@ -94,17 +94,17 @@ const INITIAL_COLUMNS: Column[] = [
       {
         id: "t6",
         title: "Improve dashboard charts",
-        project: "E-Commerce Website",
+        project: "Mobile App",
         priority: "Medium",
-        dueDate: "2024-05-25",
+        dueDate: "2026-05-29",
         avatarUrl: avatar,
       },
       {
         id: "t7",
         title: "Setup CI/CD pipeline",
-        project: "E-Commerce Website",
+        project: "DevFlow API",
         priority: "High",
-        dueDate: "2024-05-22",
+        dueDate: "2026-06-01",
         avatarUrl: avatar,
       },
       {
@@ -112,7 +112,7 @@ const INITIAL_COLUMNS: Column[] = [
         title: "Optimize images",
         project: "E-Commerce Website",
         priority: "Low",
-        dueDate: "2024-05-24",
+        dueDate: "2026-05-27",
         avatarUrl: avatar,
       },
     ],
@@ -125,17 +125,17 @@ const INITIAL_COLUMNS: Column[] = [
       {
         id: "t9",
         title: "Add login with Google",
-        project: "E-Commerce Website",
+        project: "Mobile App",
         priority: "Medium",
-        dueDate: "2024-05-26",
+        dueDate: "2026-06-03",
         avatarUrl: avatar,
       },
       {
         id: "t10",
         title: "Refactor code structure",
-        project: "E-Commerce Website",
+        project: "DevFlow API",
         priority: "Low",
-        dueDate: "2024-05-23",
+        dueDate: "2026-06-08",
         avatarUrl: avatar,
       },
     ],
@@ -150,15 +150,15 @@ const INITIAL_COLUMNS: Column[] = [
         title: "Design login page UI",
         project: "E-Commerce Website",
         priority: "Low",
-        dueDate: "2024-05-10",
+        dueDate: "2026-05-20",
         avatarUrl: avatar,
       },
       {
         id: "t12",
         title: "Setup project repository",
-        project: "E-Commerce Website",
+        project: "DevFlow API",
         priority: "Low",
-        dueDate: "2024-05-08",
+        dueDate: "2026-05-22",
         avatarUrl: avatar,
       },
     ],
@@ -231,6 +231,149 @@ function TaskCard({ task }: { task: Task }) {
   );
 }
 
+type TaskRecord = Task & {
+  statusId: Column["id"];
+  statusLabel: Column["label"];
+  statusDot: Column["dot"];
+};
+
+const PRIORITY_ORDER: Record<Priority, number> = {
+  Critical: 0,
+  High: 1,
+  Medium: 2,
+  Low: 3,
+};
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
+function getDueBucket(date: string) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const dueDate = new Date(date);
+  dueDate.setHours(0, 0, 0, 0);
+
+  const dayDiff = Math.round(
+    (dueDate.getTime() - today.getTime()) / 1000 / 60 / 60 / 24,
+  );
+
+  if (dayDiff < 0) {
+    return "Overdue";
+  }
+
+  if (dayDiff === 0) {
+    return "Today";
+  }
+
+  if (dayDiff <= 7) {
+    return "This week";
+  }
+
+  return "Later";
+}
+
+function TaskListRow({
+  task,
+  onOpen,
+}: {
+  task: TaskRecord;
+  onOpen: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="grid w-full grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)_auto_auto_auto] items-center gap-4 rounded-2xl border border-gray-200 bg-white px-4 py-4 text-left transition hover:border-gray-300 hover:shadow-sm"
+    >
+      <div className="min-w-0">
+        <p className="truncate text-sm font-semibold text-gray-800">
+          {task.title}
+        </p>
+        <p className="mt-1 truncate text-xs text-gray-500">{task.project}</p>
+      </div>
+
+      <div className="hidden min-w-0 md:block">
+        <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
+          {task.statusLabel}
+        </span>
+      </div>
+
+      <PriorityPill priority={task.priority} />
+      <DueDate date={task.dueDate} />
+
+      <Image
+        src={task.avatarUrl}
+        alt="assignee"
+        width={28}
+        height={28}
+        className="rounded-full object-cover"
+      />
+    </button>
+  );
+}
+
+function CalendarBucket({
+  title,
+  description,
+  tasks,
+  onOpen,
+}: {
+  title: string;
+  description: string;
+  tasks: TaskRecord[];
+  onOpen: (task: TaskRecord) => void;
+}) {
+  return (
+    <section className="rounded-2xl border border-gray-200 bg-white p-4">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+          <p className="mt-1 text-xs text-gray-500">{description}</p>
+        </div>
+        <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
+          {tasks.length}
+        </span>
+      </div>
+
+      <div className="space-y-3">
+        {tasks.length > 0 ? (
+          tasks.map((task) => (
+            <button
+              key={task.id}
+              type="button"
+              onClick={() => onOpen(task)}
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-left transition hover:border-gray-300 hover:bg-white"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-gray-800">
+                    {task.title}
+                  </p>
+                  <p className="mt-1 text-xs text-gray-500">{task.project}</p>
+                </div>
+                <PriorityPill priority={task.priority} />
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-3 text-xs text-gray-500">
+                <span>{task.statusLabel}</span>
+                <DueDate date={task.dueDate} />
+              </div>
+            </button>
+          ))
+        ) : (
+          <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-8 text-center text-sm text-gray-400">
+            No tasks in this bucket.
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 // ─── Column ───────────────────────────────────────────────────────────────────
 
 function BoardColumn({
@@ -290,6 +433,26 @@ function BoardColumn({
 
 type Tab = "board" | "list" | "calendar";
 
+function StatTile({
+  label,
+  value,
+  subtitle,
+}: {
+  label: string;
+  value: string | number;
+  subtitle: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-4 shadow-sm">
+      <p className="text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
+        {label}
+      </p>
+      <p className="mt-2 text-2xl font-bold text-gray-900">{value}</p>
+      <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+    </div>
+  );
+}
+
 export default function MyTasksPage() {
   const [activeTab, setActiveTab] = useState<Tab>("board");
   const [projectFilter, setProjectFilter] = useState("All Projects");
@@ -298,21 +461,116 @@ export default function MyTasksPage() {
   const [priorityOpen, setPriorityOpen] = useState(false);
   const [columns] = useState(INITIAL_COLUMNS);
 
+  const allTasks: TaskRecord[] = columns.flatMap((col) =>
+    col.tasks.map((task) => ({
+      ...task,
+      statusId: col.id,
+      statusLabel: col.label,
+      statusDot: col.dot,
+    })),
+  );
+
+  const visibleTasks = allTasks.filter((task) => {
+    const matchesProject =
+      projectFilter === "All Projects" || task.project === projectFilter;
+    const matchesPriority =
+      priorityFilter === "All" || task.priority === priorityFilter;
+
+    return matchesProject && matchesPriority;
+  });
+
+  const visibleColumns = columns.map((column) => ({
+    ...column,
+    tasks: visibleTasks.filter((task) => task.statusId === column.id),
+  }));
+
+  const sortedTasks = [...visibleTasks].sort((left, right) => {
+    const timeDiff = new Date(left.dueDate).getTime() - new Date(right.dueDate).getTime();
+
+    if (timeDiff !== 0) {
+      return timeDiff;
+    }
+
+    return PRIORITY_ORDER[left.priority] - PRIORITY_ORDER[right.priority];
+  });
+
+  const calendarBuckets = ["Overdue", "Today", "This week", "Later"].map(
+    (bucket) => ({
+      title: bucket,
+      description:
+        bucket === "Overdue"
+          ? "Due before today"
+          : bucket === "Today"
+            ? "Due right now"
+            : bucket === "This week"
+              ? "Due in the next seven days"
+              : "Due after this week",
+      tasks: sortedTasks.filter((task) => getDueBucket(task.dueDate) === bucket),
+    }),
+  );
+
+  const overdueCount = visibleTasks.filter(
+    (task) => getDueBucket(task.dueDate) === "Overdue",
+  ).length;
+  const dueSoonCount = visibleTasks.filter(
+    (task) => getDueBucket(task.dueDate) === "This week",
+  ).length;
+  const completedCount = visibleTasks.filter(
+    (task) => task.statusId === "done",
+  ).length;
+  const projectCount = new Set(visibleTasks.map((task) => task.project)).size;
+
   function handleAddTask() {
     toast.info("New task creation coming soon!");
   }
 
+  function handleOpenTask(task: TaskRecord) {
+    toast.info(`${task.title} in ${task.project}`);
+  }
+
+  function resetFilters() {
+    setProjectFilter("All Projects");
+    setPriorityFilter("All");
+    setProjectOpen(false);
+    setPriorityOpen(false);
+  }
+
   return (
-    <div className="flex flex-col h-full">
-      {/* ── Page header ── */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-200 bg-white">
-        <h1 className="text-2xl font-bold text-gray-900">My Tasks</h1>
-        <p className="text-sm text-gray-500 mt-0.5">Tasks assigned to you</p>
+    <div className="flex h-full flex-col bg-gray-50">
+      <div className="border-b border-gray-200 bg-white px-6 pt-6 pb-4">
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-medium uppercase tracking-[0.25em] text-blue-500">
+            My Work
+          </p>
+          <h1 className="text-2xl font-bold text-gray-900">My Tasks</h1>
+          <p className="text-sm text-gray-500">Tasks assigned to you</p>
+        </div>
       </div>
 
-      {/* ── Tab bar + filters ── */}
-      <div className="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-100 gap-4 flex-wrap">
-        {/* Tabs */}
+      <div className="grid gap-4 border-b border-gray-100 bg-white px-6 py-4 sm:grid-cols-2 xl:grid-cols-4">
+        <StatTile
+          label="Visible tasks"
+          value={visibleTasks.length}
+          subtitle="Matching your filters"
+        />
+        <StatTile
+          label="Overdue"
+          value={overdueCount}
+          subtitle="Needs attention now"
+        />
+        <StatTile
+          label="Due this week"
+          value={dueSoonCount}
+          subtitle="Short-term focus items"
+        />
+        <StatTile
+          label="Projects"
+          value={projectCount}
+          subtitle="Across the workspace"
+        />
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 bg-white px-6 py-3">
         <div className="flex items-center gap-0">
           {(["board", "list", "calendar"] as Tab[]).map((tab) => {
             const Icon =
@@ -321,12 +579,17 @@ export default function MyTasksPage() {
                 : tab === "list"
                   ? MdList
                   : MdCalendarToday;
+
             return (
               <button
                 key={tab}
                 type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium capitalize border-b-2 transition-colors ${
+                onClick={() => {
+                  setActiveTab(tab);
+                  setProjectOpen(false);
+                  setPriorityOpen(false);
+                }}
+                className={`flex items-center gap-1.5 border-b-2 px-4 py-2 text-sm font-medium capitalize transition-colors ${
                   activeTab === tab
                     ? "border-blue-600 text-blue-600"
                     : "border-transparent text-gray-500 hover:text-gray-700"
@@ -339,9 +602,7 @@ export default function MyTasksPage() {
           })}
         </div>
 
-        {/* Filter controls */}
-        <div className="flex items-center gap-2">
-          {/* All Projects */}
+        <div className="flex flex-wrap items-center gap-2">
           <div className="relative">
             <button
               type="button"
@@ -349,13 +610,13 @@ export default function MyTasksPage() {
                 setProjectOpen(!projectOpen);
                 setPriorityOpen(false);
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-gray-300 transition-colors"
+              className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 transition-colors hover:border-gray-300"
             >
               {projectFilter} <MdExpandMore className="text-gray-400" />
             </button>
-            {projectOpen && (
-              <div className="absolute right-0 top-9 z-50 w-48 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                {["All Projects", ...mockProjects.map((p) => p.name)].map(
+            {projectOpen ? (
+              <div className="absolute right-0 top-9 z-50 w-48 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+                {(["All Projects", ...mockProjects.map((project) => project.name)]).map(
                   (name) => (
                     <button
                       key={name}
@@ -364,17 +625,16 @@ export default function MyTasksPage() {
                         setProjectFilter(name);
                         setProjectOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${projectFilter === name ? "text-blue-600 bg-blue-50" : "text-gray-700"}`}
+                      className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${projectFilter === name ? "bg-blue-50 text-blue-600" : "text-gray-700"}`}
                     >
                       {name}
                     </button>
                   ),
                 )}
               </div>
-            )}
+            ) : null}
           </div>
 
-          {/* Priority filter */}
           <div className="relative">
             <button
               type="button"
@@ -382,52 +642,51 @@ export default function MyTasksPage() {
                 setPriorityOpen(!priorityOpen);
                 setProjectOpen(false);
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-gray-300 transition-colors"
+              className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 transition-colors hover:border-gray-300"
             >
-              Priority: {priorityFilter}{" "}
-              <MdExpandMore className="text-gray-400" />
+              Priority: {priorityFilter} <MdExpandMore className="text-gray-400" />
             </button>
-            {priorityOpen && (
-              <div className="absolute right-0 top-9 z-50 w-36 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                {["All", "Low", "Medium", "High", "Critical"].map((p) => (
+            {priorityOpen ? (
+              <div className="absolute right-0 top-9 z-50 w-36 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+                {(["All", "Low", "Medium", "High", "Critical"] as const).map((priority) => (
                   <button
-                    key={p}
+                    key={priority}
                     type="button"
                     onClick={() => {
-                      setPriorityFilter(p);
+                      setPriorityFilter(priority);
                       setPriorityOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors ${priorityFilter === p ? "text-blue-600 bg-blue-50" : "text-gray-700"}`}
+                    className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${priorityFilter === priority ? "bg-blue-50 text-blue-600" : "text-gray-700"}`}
                   >
-                    {p}
+                    {priority}
                   </button>
                 ))}
               </div>
-            )}
+            ) : null}
           </div>
 
-          {/* Filters */}
           <button
             type="button"
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:border-gray-300 transition-colors"
+            onClick={resetFilters}
+            className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 transition-colors hover:border-gray-300"
           >
             <MdFilterList className="text-gray-500" />
-            Filters
+            Reset
           </button>
 
-          {/* New Task */}
           <div className="flex items-stretch">
             <button
               type="button"
-              onClick={() => toast.info("New task creation coming soon!")}
-              className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-l-lg transition-colors"
+              onClick={handleAddTask}
+              className="flex items-center gap-1.5 rounded-l-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
               <MdAdd className="text-base" />
               New Task
             </button>
             <button
               type="button"
-              className="px-2 bg-blue-600 hover:bg-blue-700 text-white rounded-r-lg border-l border-blue-500 transition-colors"
+              onClick={handleAddTask}
+              className="rounded-r-lg border-l border-blue-500 bg-blue-600 px-2 text-white transition-colors hover:bg-blue-700"
             >
               <MdExpandMore className="text-base" />
             </button>
@@ -435,46 +694,99 @@ export default function MyTasksPage() {
         </div>
       </div>
 
-      {/* ── Board / Other views ── */}
-      <div className="flex-1 overflow-auto p-6 bg-gray-50">
-        {activeTab === "board" && (
-          <div className="flex gap-5 items-start pb-4">
-            {columns.map((col) => (
-              <BoardColumn key={col.id} col={col} onAddTask={handleAddTask} />
-            ))}
-          </div>
-        )}
-
-        {activeTab !== "board" && (
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="text-5xl mb-3">
-                {activeTab === "list" ? "📋" : "📅"}
+      <div className="flex-1 overflow-auto p-6">
+        {activeTab === "board" ? (
+          visibleTasks.length > 0 ? (
+            <div className="flex gap-5 overflow-x-auto pb-4">
+              {visibleColumns.map((column) => (
+                <BoardColumn key={column.id} col={column} onAddTask={handleAddTask} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex min-h-80 items-center justify-center rounded-3xl border border-dashed border-gray-200 bg-white">
+              <div className="text-center">
+                <p className="text-lg font-semibold text-gray-900">
+                  No board items match your filters.
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Clear the project or priority filter to see more tasks.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                >
+                  Reset filters
+                </button>
               </div>
-              <p className="text-gray-500 font-medium">
-                {activeTab === "list" ? "List View" : "Calendar View"} coming
-                soon
-              </p>
-              <p className="text-gray-400 text-sm mt-1">
-                Switch to Board view for now
-              </p>
+            </div>
+          )
+        ) : null}
+
+        {activeTab === "list" ? (
+          <div className="space-y-4">
+            <div className="rounded-2xl border border-gray-200 bg-white px-4 py-4 shadow-sm">
+              <div className="grid grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)_auto_auto_auto] gap-4 text-xs font-medium uppercase tracking-[0.18em] text-gray-400">
+                <span>Task</span>
+                <span className="hidden md:block">Status</span>
+                <span>Priority</span>
+                <span>Due</span>
+                <span>Owner</span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {sortedTasks.length > 0 ? (
+                sortedTasks.map((task) => (
+                  <TaskListRow key={task.id} task={task} onOpen={() => handleOpenTask(task)} />
+                ))
+              ) : (
+                <div className="rounded-2xl border border-dashed border-gray-200 bg-white px-6 py-14 text-center">
+                  <p className="text-lg font-semibold text-gray-900">
+                    No list items match your filters.
+                  </p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Reset filters to bring tasks back into view.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+                  >
+                    Reset filters
+                  </button>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        ) : null}
+
+        {activeTab === "calendar" ? (
+          <div className="grid gap-4 xl:grid-cols-2">
+            {calendarBuckets.map((bucket) => (
+              <CalendarBucket
+                key={bucket.title}
+                title={bucket.title}
+                description={bucket.description}
+                tasks={bucket.tasks}
+                onOpen={handleOpenTask}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
 
-      {/* ── Board Settings ── */}
-      {activeTab === "board" && (
-        <div className="flex justify-end px-6 py-3 border-t border-gray-200 bg-white">
+      {activeTab === "board" ? (
+        <div className="flex justify-end border-t border-gray-200 bg-white px-6 py-3">
           <button
             type="button"
-            className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            className="flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-700"
           >
             <MdSettings className="text-base" />
             Board Settings
           </button>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
