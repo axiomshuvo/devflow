@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   MdCalendarToday,
   MdExpandMore,
@@ -56,19 +56,79 @@ const PRIORITY_DATA = [
 ];
 
 const TOP_PROJECTS = [
-  { name: "E-commerce Website", icon: "🛍️", issues: 62, progress: 78, barColor: "bg-green-500" },
-  { name: "Mobile App", icon: "📱", issues: 28, progress: 65, barColor: "bg-green-500" },
-  { name: "DevFlow Platform", icon: "</>", issues: 18, progress: 54, barColor: "bg-green-400" },
-  { name: "Internal Tools", icon: "⚙️", issues: 12, progress: 40, barColor: "bg-amber-400" },
-  { name: "Marketing Website", icon: "🌐", issues: 8, progress: 33, barColor: "bg-amber-400" },
+  {
+    name: "E-commerce Website",
+    icon: "🛍️",
+    issues: 62,
+    progress: 78,
+    barColor: "bg-green-500",
+  },
+  {
+    name: "Mobile App",
+    icon: "📱",
+    issues: 28,
+    progress: 65,
+    barColor: "bg-green-500",
+  },
+  {
+    name: "DevFlow Platform",
+    icon: "</>",
+    issues: 18,
+    progress: 54,
+    barColor: "bg-green-400",
+  },
+  {
+    name: "Internal Tools",
+    icon: "⚙️",
+    issues: 12,
+    progress: 40,
+    barColor: "bg-amber-400",
+  },
+  {
+    name: "Marketing Website",
+    icon: "🌐",
+    issues: 8,
+    progress: 33,
+    barColor: "bg-amber-400",
+  },
 ];
 
 const TEAM_WORKLOAD = [
-  { name: "Karim Hossain", initials: "KH", color: "bg-sky-500", inProgress: 12, completed: 18 },
-  { name: "Rahim Ahmed", initials: "RA", color: "bg-emerald-500", inProgress: 9, completed: 14 },
-  { name: "Jannat Rahman", initials: "JR", color: "bg-pink-500", inProgress: 8, completed: 12 },
-  { name: "Sakib Al Hasan", initials: "SH", color: "bg-amber-500", inProgress: 6, completed: 10 },
-  { name: "Nusrat Jahan", initials: "NJ", color: "bg-orange-500", inProgress: 4, completed: 8 },
+  {
+    name: "Karim Hossain",
+    initials: "KH",
+    color: "bg-sky-500",
+    inProgress: 12,
+    completed: 18,
+  },
+  {
+    name: "Rahim Ahmed",
+    initials: "RA",
+    color: "bg-emerald-500",
+    inProgress: 9,
+    completed: 14,
+  },
+  {
+    name: "Jannat Rahman",
+    initials: "JR",
+    color: "bg-pink-500",
+    inProgress: 8,
+    completed: 12,
+  },
+  {
+    name: "Sakib Al Hasan",
+    initials: "SH",
+    color: "bg-amber-500",
+    inProgress: 6,
+    completed: 10,
+  },
+  {
+    name: "Nusrat Jahan",
+    initials: "NJ",
+    color: "bg-orange-500",
+    inProgress: 4,
+    completed: 8,
+  },
 ];
 
 const STATS = [
@@ -119,7 +179,14 @@ const STATS = [
   },
 ];
 
-const TABS = ["Overview", "Projects", "Issues", "Team", "Reports", "DORA Metrics"];
+const TABS = [
+  "Overview",
+  "Projects",
+  "Issues",
+  "Team",
+  "Reports",
+  "DORA Metrics",
+];
 const TOTAL_STATUS = STATUS_DATA.reduce((s, d) => s + d.value, 0);
 const TOTAL_PRIORITY = PRIORITY_DATA.reduce((s, d) => s + d.value, 0);
 
@@ -203,36 +270,39 @@ export default function AnalyticsPage() {
         <div className="flex-1 p-6 flex flex-col gap-5">
           {/* ── Stats row ── */}
           <div className="grid grid-cols-5 gap-4">
-            {STATS.map(({ label, value, pct, up, icon: Icon, iconBg, iconColor }) => (
-              <div
-                key={label}
-                className="bg-white rounded-xl border border-gray-200 p-4 flex items-start gap-3"
-              >
+            {STATS.map(
+              ({ label, value, pct, up, icon: Icon, iconBg, iconColor }) => (
                 <div
-                  className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}
+                  key={label}
+                  className="bg-white rounded-xl border border-gray-200 p-4 flex items-start gap-3"
                 >
-                  <Icon className={`text-xl ${iconColor}`} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-gray-500 font-medium leading-tight">
-                    {label}
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 mt-0.5">
-                    {value}
-                  </p>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <span
-                      className={`text-xs font-semibold ${up ? "text-green-600" : "text-red-500"}`}
-                    >
-                      {up ? "↑" : "↓"}{pct}%
-                    </span>
-                    <span className="text-[10px] text-gray-400">
-                      vs May 7 – May 13
-                    </span>
+                  <div
+                    className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}
+                  >
+                    <Icon className={`text-xl ${iconColor}`} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs text-gray-500 font-medium leading-tight">
+                      {label}
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900 mt-0.5">
+                      {value}
+                    </p>
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <span
+                        className={`text-xs font-semibold ${up ? "text-green-600" : "text-red-500"}`}
+                      >
+                        {up ? "↑" : "↓"}
+                        {pct}%
+                      </span>
+                      <span className="text-[10px] text-gray-400">
+                        vs May 7 – May 13
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
 
           {/* ── Charts row 1 ── */}
@@ -349,7 +419,10 @@ export default function AnalyticsPage() {
                   {STATUS_DATA.map((item) => {
                     const pct = ((item.value / TOTAL_STATUS) * 100).toFixed(1);
                     return (
-                      <div key={item.name} className="flex items-center justify-between gap-2">
+                      <div
+                        key={item.name}
+                        className="flex items-center justify-between gap-2"
+                      >
                         <div className="flex items-center gap-1.5 min-w-0">
                           <span
                             className="w-2.5 h-2.5 rounded-full shrink-0"
@@ -392,9 +465,15 @@ export default function AnalyticsPage() {
               </div>
               {/* Column headers */}
               <div className="grid grid-cols-3 gap-2 mb-2 px-1">
-                <span className="text-xs text-gray-400 font-medium col-span-1">Project</span>
-                <span className="text-xs text-gray-400 font-medium text-right">Issues</span>
-                <span className="text-xs text-gray-400 font-medium text-right">Progress</span>
+                <span className="text-xs text-gray-400 font-medium col-span-1">
+                  Project
+                </span>
+                <span className="text-xs text-gray-400 font-medium text-right">
+                  Issues
+                </span>
+                <span className="text-xs text-gray-400 font-medium text-right">
+                  Progress
+                </span>
               </div>
               <div className="flex flex-col gap-3">
                 {TOP_PROJECTS.map((proj) => (
@@ -439,14 +518,24 @@ export default function AnalyticsPage() {
               </div>
               {/* Column headers */}
               <div className="flex items-center mb-2 px-1">
-                <span className="text-xs text-gray-400 font-medium flex-1">Member</span>
-                <span className="text-xs text-gray-400 font-medium w-24 text-center">In Progress</span>
-                <span className="text-xs text-gray-400 font-medium w-20 text-center">Completed</span>
+                <span className="text-xs text-gray-400 font-medium flex-1">
+                  Member
+                </span>
+                <span className="text-xs text-gray-400 font-medium w-24 text-center">
+                  In Progress
+                </span>
+                <span className="text-xs text-gray-400 font-medium w-20 text-center">
+                  Completed
+                </span>
               </div>
               <div className="flex flex-col gap-3">
                 {TEAM_WORKLOAD.map((member) => {
-                  const maxInProg = Math.max(...TEAM_WORKLOAD.map((m) => m.inProgress));
-                  const maxDone = Math.max(...TEAM_WORKLOAD.map((m) => m.completed));
+                  const maxInProg = Math.max(
+                    ...TEAM_WORKLOAD.map((m) => m.inProgress),
+                  );
+                  const maxDone = Math.max(
+                    ...TEAM_WORKLOAD.map((m) => m.completed),
+                  );
                   return (
                     <div key={member.name} className="flex items-center gap-2">
                       {/* Avatar */}
@@ -464,7 +553,9 @@ export default function AnalyticsPage() {
                         <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-amber-400 rounded-full"
-                            style={{ width: `${(member.inProgress / maxInProg) * 100}%` }}
+                            style={{
+                              width: `${(member.inProgress / maxInProg) * 100}%`,
+                            }}
                           />
                         </div>
                         <span className="text-xs text-gray-500 w-4 text-right shrink-0">
@@ -476,7 +567,9 @@ export default function AnalyticsPage() {
                         <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-green-400 rounded-full"
-                            style={{ width: `${(member.completed / maxDone) * 100}%` }}
+                            style={{
+                              width: `${(member.completed / maxDone) * 100}%`,
+                            }}
                           />
                         </div>
                         <span className="text-xs text-gray-500 w-4 text-right shrink-0">
@@ -504,7 +597,11 @@ export default function AnalyticsPage() {
                   data={PRIORITY_DATA}
                   margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#f3f4f6"
+                    vertical={false}
+                  />
                   <XAxis
                     dataKey="name"
                     tick={{ fontSize: 11, fill: "#9ca3af" }}
