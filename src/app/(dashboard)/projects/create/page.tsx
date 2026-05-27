@@ -139,10 +139,17 @@ const DEFAULT_SETTINGS = [
 
 const STEPS = [
   { id: 1, label: "Project Details" },
-  { id: 2, label: "Configure" },
+  { id: 2, label: "Configuration" },
   { id: 3, label: "Team" },
   { id: 4, label: "Review" },
 ];
+
+const STEP_FIELDS: Record<number, (keyof ProjectFormValues)[]> = {
+  1: ["projectName", "projectKey", "description", "category"],
+  2: ["startDate"],
+  3: ["projectLead"],
+  4: [],
+};
 
 const ICONS = [
   {
@@ -275,6 +282,7 @@ export default function ProjectCreatePage() {
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -290,15 +298,31 @@ export default function ProjectCreatePage() {
     mode: "onTouched",
   });
 
-  const values = watch();
+  const projectName = watch("projectName");
+  const projectKey = watch("projectKey");
+  const description = watch("description");
+  const category = watch("category");
+  const startDate = watch("startDate");
+  const deadline = watch("deadline");
+  const projectLead = watch("projectLead");
+  const values = {
+    projectName,
+    projectKey,
+    description,
+    category,
+    startDate,
+    deadline,
+    projectLead,
+  };
   const leadUser =
-    mockUsers.find((user) => user.id === values.projectLead) ?? currentUser;
+    mockUsers.find((user) => user.id === projectLead) ?? currentUser;
   const previewIcon =
     ICONS.find((item) => item.key === selectedIcon) ?? ICONS[0];
   const selectedTeam = mockUsers.filter((user) =>
     selectedMembers.includes(user.id),
   );
   const completion = Math.round((activeStep / STEPS.length) * 100);
+  const isFinalStep = activeStep === STEPS.length;
 
   function toggleMember(memberId: string) {
     setSelectedMembers((current) =>
@@ -320,13 +344,29 @@ export default function ProjectCreatePage() {
     setAvatarFileName(file?.name ?? null);
   }
 
-  function onSubmit(valuesToSave: ProjectFormValues) {
-    if (activeStep < STEPS.length) {
-      setActiveStep((current) => Math.min(current + 1, STEPS.length));
-      toast.info(`Saved step ${activeStep} locally.`);
+  async function goToNextStep() {
+    const fieldsToValidate = STEP_FIELDS[activeStep] ?? [];
+    const valid = await trigger(fieldsToValidate, { shouldFocus: true });
+
+    if (!valid) {
       return;
     }
 
+    setActiveStep((current) => Math.min(current + 1, STEPS.length));
+    toast.info(`Saved step ${activeStep} locally.`);
+  }
+
+  function goToPreviousStep() {
+    setActiveStep((current) => Math.max(current - 1, 1));
+  }
+
+  function handleStepClick(stepId: number) {
+    if (stepId <= activeStep) {
+      setActiveStep(stepId);
+    }
+  }
+
+  function onFinalSubmit(valuesToSave: ProjectFormValues) {
     toast.success(`Created ${valuesToSave.projectName} in the mock workspace.`);
     router.push("/projects");
   }
@@ -368,13 +408,15 @@ export default function ProjectCreatePage() {
             {STEPS.map((step) => {
               const active = step.id === activeStep;
               const complete = step.id < activeStep;
+              const accessible = step.id <= activeStep;
 
               return (
                 <button
                   key={step.id}
                   type="button"
-                  onClick={() => setActiveStep(step.id)}
-                  className="flex items-center gap-3"
+                  onClick={() => handleStepClick(step.id)}
+                  disabled={!accessible}
+                  className={`flex items-center gap-3 transition ${accessible ? "cursor-pointer" : "cursor-not-allowed opacity-60"}`}
                 >
                   <span
                     className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors ${active ? "bg-blue-600 text-white" : complete ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-400"}`}
@@ -400,260 +442,448 @@ export default function ProjectCreatePage() {
         </header>
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={async (event) => {
+            event.preventDefault();
+
+            if (!isFinalStep) {
+              return;
+            }
+
+            await handleSubmit(onFinalSubmit)(event);
+          }}
           className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]"
         >
           <div className="space-y-6">
-            <SectionCard
-              title="Basic Information"
-              description="Give the project a clear identity and scope."
-            >
-              <div className="grid gap-5 md:grid-cols-2">
-                <div className="md:col-span-1">
-                  <FieldLabel required>Project Name</FieldLabel>
-                  <input
-                    {...register("projectName")}
-                    placeholder="Enter project name"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                  />
-                  {errors.projectName ? (
-                    <p className="mt-2 text-xs text-rose-500">
-                      {errors.projectName.message}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div className="md:col-span-1">
-                  <FieldLabel required>Project Key</FieldLabel>
-                  <input
-                    {...register("projectKey", {
-                      setValueAs: (value: string) =>
-                        value
-                          .toUpperCase()
-                          .replace(/[^A-Z0-9-]/g, "")
-                          .slice(0, 10),
-                    })}
-                    placeholder="Enter project key"
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                  />
-                  {errors.projectKey ? (
-                    <p className="mt-2 text-xs text-rose-500">
-                      {errors.projectKey.message}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div className="md:col-span-2">
-                  <FieldLabel required>Description</FieldLabel>
-                  <textarea
-                    {...register("description")}
-                    rows={5}
-                    placeholder="Describe the project goals, scope, and objectives..."
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                  />
-                  {errors.description ? (
-                    <p className="mt-2 text-xs text-rose-500">
-                      {errors.description.message}
-                    </p>
-                  ) : null}
-                </div>
-              </div>
-            </SectionCard>
-
-            <SectionCard
-              title="Project Type"
-              description="Choose the template that best matches your work."
-            >
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                {PROJECT_TYPES.map((type) => (
-                  <ChoiceCard
-                    key={type.value}
-                    active={projectType === type.value}
-                    onClick={() => {
-                      setProjectType(type.value);
-                      setValue("category", type.label, {
-                        shouldValidate: true,
-                      });
-                    }}
-                    icon={type.icon}
-                    title={type.label}
-                    description={type.description}
-                  />
-                ))}
-              </div>
-            </SectionCard>
-
-            <SectionCard
-              title="Privacy & Scheduling"
-              description="Control access and set key dates before launch."
-            >
-              <div className="space-y-6">
-                <div className="grid gap-3 md:grid-cols-2">
-                  {PRIVACY_OPTIONS.map((option) => (
-                    <ChoiceCard
-                      key={option.value}
-                      active={privacy === option.value}
-                      onClick={() => setPrivacy(option.value)}
-                      icon={option.icon}
-                      title={option.label}
-                      description={option.description}
-                    />
-                  ))}
-                </div>
-
-                <div className="grid gap-5 md:grid-cols-3">
-                  <div>
-                    <FieldLabel required>Category</FieldLabel>
-                    <select
-                      {...register("category")}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                    >
-                      {CATEGORY_OPTIONS.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.category ? (
-                      <p className="mt-2 text-xs text-rose-500">
-                        {errors.category.message}
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div>
-                    <FieldLabel required>Start Date</FieldLabel>
-                    <input
-                      {...register("startDate")}
-                      type="date"
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                    />
-                    {errors.startDate ? (
-                      <p className="mt-2 text-xs text-rose-500">
-                        {errors.startDate.message}
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div>
-                    <FieldLabel>Deadline</FieldLabel>
-                    <input
-                      {...register("deadline")}
-                      type="date"
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
-                    />
-                  </div>
-                </div>
-              </div>
-            </SectionCard>
-
-            <SectionCard
-              title="Project Avatar"
-              description="Upload an image or pick a simple icon for the project."
-            >
-              <div className="grid gap-5 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => fileInputRef.current?.click()}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      fileInputRef.current?.click();
-                    }
-                  }}
-                  className="flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-blue-200 bg-blue-50/40 px-6 text-center transition hover:border-blue-400 hover:bg-blue-50"
+            {activeStep === 1 ? (
+              <>
+                <SectionCard
+                  title="Project Details"
+                  description="Give the project a clear identity and scope."
                 >
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 shadow-sm">
-                    <MdImage className="text-3xl" />
-                  </div>
-                  <p className="font-semibold text-slate-900">
-                    Click to upload or drag and drop
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    PNG, JPG or SVG (max 2MB)
-                  </p>
-                  {avatarFileName ? (
-                    <p className="mt-4 rounded-full bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-sm">
-                      {avatarFileName}
-                    </p>
-                  ) : null}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/png,image/jpeg,image/svg+xml"
-                    className="hidden"
-                    onChange={handleAvatarPick}
-                  />
-                </div>
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div className="md:col-span-1">
+                      <FieldLabel required>Project Name</FieldLabel>
+                      <input
+                        {...register("projectName")}
+                        placeholder="Enter project name"
+                        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                      />
+                      {errors.projectName ? (
+                        <p className="mt-2 text-xs text-rose-500">
+                          {errors.projectName.message}
+                        </p>
+                      ) : null}
+                    </div>
 
-                <div>
-                  <p className="mb-3 text-sm font-medium text-slate-700">
-                    Or choose an icon
-                  </p>
-                  <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                    {ICONS.map((item) => (
-                      <button
-                        key={item.key}
-                        type="button"
-                        onClick={() => setSelectedIcon(item.key)}
-                        className={`flex flex-col items-center justify-center rounded-2xl border px-4 py-5 transition ${selectedIcon === item.key ? `${item.border} ring-2 ring-blue-200` : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50"}`}
-                      >
-                        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
-                          {item.icon}
-                        </div>
-                        <span className="text-sm font-medium text-slate-900">
-                          {item.label}
-                        </span>
-                      </button>
+                    <div className="md:col-span-1">
+                      <FieldLabel required>Project Key</FieldLabel>
+                      <input
+                        {...register("projectKey", {
+                          setValueAs: (value: string) =>
+                            value
+                              .toUpperCase()
+                              .replace(/[^A-Z0-9-]/g, "")
+                              .slice(0, 10),
+                        })}
+                        placeholder="Enter project key"
+                        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                      />
+                      {errors.projectKey ? (
+                        <p className="mt-2 text-xs text-rose-500">
+                          {errors.projectKey.message}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <FieldLabel required>Description</FieldLabel>
+                      <textarea
+                        {...register("description")}
+                        rows={5}
+                        placeholder="Describe the project goals, scope, and objectives..."
+                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                      />
+                      {errors.description ? (
+                        <p className="mt-2 text-xs text-rose-500">
+                          {errors.description.message}
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                </SectionCard>
+
+                <SectionCard
+                  title="Project Type"
+                  description="Choose the template that best matches your work."
+                >
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                    {PROJECT_TYPES.map((type) => (
+                      <ChoiceCard
+                        key={type.value}
+                        active={projectType === type.value}
+                        onClick={() => {
+                          setProjectType(type.value);
+                          setValue("category", type.label, {
+                            shouldValidate: true,
+                          });
+                        }}
+                        icon={type.icon}
+                        title={type.label}
+                        description={type.description}
+                      />
                     ))}
                   </div>
-                </div>
-              </div>
-            </SectionCard>
+                </SectionCard>
 
-            <SectionCard
-              title="Team Members"
-              description="Add people who will collaborate on this project."
-            >
-              <div className="flex flex-wrap gap-3">
-                {mockUsers.map((member) => {
-                  const active = selectedMembers.includes(member.id);
-                  const initials = member.name
-                    .split(" ")
-                    .map((part) => part[0])
-                    .slice(0, 2)
-                    .join("");
-
-                  return (
-                    <button
-                      key={member.id}
-                      type="button"
-                      onClick={() => toggleMember(member.id)}
-                      className={`flex items-center gap-3 rounded-2xl border px-3 py-2 transition ${active ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50"}`}
-                    >
-                      <Avatar size="sm" className="h-9 w-9">
-                        <Avatar.Image src={member.imageUrl} alt={member.name} />
-                        <Avatar.Fallback>{initials}</Avatar.Fallback>
-                      </Avatar>
-                      <div className="text-left">
-                        <p className="text-sm font-medium text-slate-900">
-                          {member.name}
+                <SectionCard
+                  title="Category"
+                  description="Map the project to the best workspace category."
+                >
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div>
+                      <FieldLabel required>Category</FieldLabel>
+                      <select
+                        {...register("category")}
+                        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                      >
+                        {CATEGORY_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.category ? (
+                        <p className="mt-2 text-xs text-rose-500">
+                          {errors.category.message}
                         </p>
-                        <p className="text-xs text-slate-500">
-                          {member.role.toLowerCase()}
+                      ) : null}
+                    </div>
+
+                    <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                      <p className="font-medium text-slate-900">
+                        Why this matters
+                      </p>
+                      <p className="mt-1">
+                        The category helps teams filter projects and keeps the
+                        dashboard organization consistent.
+                      </p>
+                    </div>
+                  </div>
+                </SectionCard>
+              </>
+            ) : null}
+
+            {activeStep === 2 ? (
+              <>
+                <SectionCard
+                  title="Project Configuration"
+                  description="Control access, timing, branding, and default behavior."
+                >
+                  <div className="space-y-6">
+                    <div className="grid gap-3 md:grid-cols-2">
+                      {PRIVACY_OPTIONS.map((option) => (
+                        <ChoiceCard
+                          key={option.value}
+                          active={privacy === option.value}
+                          onClick={() => setPrivacy(option.value)}
+                          icon={option.icon}
+                          title={option.label}
+                          description={option.description}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="grid gap-5 md:grid-cols-3">
+                      <div>
+                        <FieldLabel required>Start Date</FieldLabel>
+                        <input
+                          {...register("startDate")}
+                          type="date"
+                          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                        />
+                        {errors.startDate ? (
+                          <p className="mt-2 text-xs text-rose-500">
+                            {errors.startDate.message}
+                          </p>
+                        ) : null}
+                      </div>
+
+                      <div>
+                        <FieldLabel>Deadline</FieldLabel>
+                        <input
+                          {...register("deadline")}
+                          type="date"
+                          className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                        />
+                      </div>
+
+                      <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                        <p className="font-medium text-slate-900">
+                          Schedule tip
+                        </p>
+                        <p className="mt-1">
+                          Pick a start date now so your team timeline stays
+                          realistic from the beginning.
                         </p>
                       </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </SectionCard>
+                    </div>
+                  </div>
+                </SectionCard>
+
+                <SectionCard
+                  title="Project Avatar"
+                  description="Upload an image or pick a simple icon for the project."
+                >
+                  <div className="grid gap-5 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => fileInputRef.current?.click()}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          fileInputRef.current?.click();
+                        }
+                      }}
+                      className="flex min-h-52 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-blue-200 bg-blue-50/40 px-6 text-center transition hover:border-blue-400 hover:bg-blue-50"
+                    >
+                      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 shadow-sm">
+                        <MdImage className="text-3xl" />
+                      </div>
+                      <p className="font-semibold text-slate-900">
+                        Click to upload or drag and drop
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        PNG, JPG or SVG (max 2MB)
+                      </p>
+                      {avatarFileName ? (
+                        <p className="mt-4 rounded-full bg-white px-3 py-1 text-xs font-medium text-blue-700 shadow-sm">
+                          {avatarFileName}
+                        </p>
+                      ) : null}
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/png,image/jpeg,image/svg+xml"
+                        className="hidden"
+                        onChange={handleAvatarPick}
+                      />
+                    </div>
+
+                    <div>
+                      <p className="mb-3 text-sm font-medium text-slate-700">
+                        Or choose an icon
+                      </p>
+                      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                        {ICONS.map((item) => (
+                          <button
+                            key={item.key}
+                            type="button"
+                            onClick={() => setSelectedIcon(item.key)}
+                            className={`flex flex-col items-center justify-center rounded-2xl border px-4 py-5 transition ${selectedIcon === item.key ? `${item.border} ring-2 ring-blue-200` : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50"}`}
+                          >
+                            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+                              {item.icon}
+                            </div>
+                            <span className="text-sm font-medium text-slate-900">
+                              {item.label}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </SectionCard>
+
+                <SectionCard
+                  title="Default Settings"
+                  description="Fine-tune project behavior before launch."
+                >
+                  <div className="space-y-4">
+                    {DEFAULT_SETTINGS.map((setting) => {
+                      const enabled = defaultSettings[setting.key];
+
+                      return (
+                        <button
+                          key={setting.key}
+                          type="button"
+                          role="switch"
+                          aria-checked={enabled}
+                          onClick={() => toggleSetting(setting.key)}
+                          className="flex w-full items-center justify-between gap-4 rounded-2xl border border-slate-200 px-4 py-3 text-left transition hover:border-blue-200 hover:bg-slate-50"
+                        >
+                          <div>
+                            <p className="text-sm font-medium text-slate-900">
+                              {setting.title}
+                            </p>
+                            <p className="text-xs text-slate-500">
+                              {setting.description}
+                            </p>
+                          </div>
+                          <span
+                            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${enabled ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}
+                          >
+                            {enabled ? "Enabled" : "Disabled"}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </SectionCard>
+              </>
+            ) : null}
+
+            {activeStep === 3 ? (
+              <>
+                <SectionCard
+                  title="Team Members"
+                  description="Choose the project lead and the people who will collaborate."
+                >
+                  <div className="grid gap-5 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)]">
+                    <div>
+                      <FieldLabel required>Project Lead</FieldLabel>
+                      <select
+                        {...register("projectLead")}
+                        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100"
+                      >
+                        {mockUsers.map((member) => (
+                          <option key={member.id} value={member.id}>
+                            {member.name}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.projectLead ? (
+                        <p className="mt-2 text-xs text-rose-500">
+                          {errors.projectLead.message}
+                        </p>
+                      ) : null}
+
+                      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                        <p className="font-medium text-slate-900">Lead role</p>
+                        <p className="mt-1">
+                          The project lead will appear in summaries and can be
+                          changed later from project settings.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="mb-3 text-sm font-medium text-slate-700">
+                        Add collaborators
+                      </p>
+                      <div className="flex flex-wrap gap-3">
+                        {mockUsers.map((member) => {
+                          const active = selectedMembers.includes(member.id);
+                          const initials = member.name
+                            .split(" ")
+                            .map((part) => part[0])
+                            .slice(0, 2)
+                            .join("");
+
+                          return (
+                            <button
+                              key={member.id}
+                              type="button"
+                              onClick={() => toggleMember(member.id)}
+                              className={`flex items-center gap-3 rounded-2xl border px-3 py-2 transition ${active ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50"}`}
+                            >
+                              <Avatar size="sm" className="h-9 w-9">
+                                <Avatar.Image
+                                  src={member.imageUrl}
+                                  alt={member.name}
+                                />
+                                <Avatar.Fallback>{initials}</Avatar.Fallback>
+                              </Avatar>
+                              <div className="text-left">
+                                <p className="text-sm font-medium text-slate-900">
+                                  {member.name}
+                                </p>
+                                <p className="text-xs text-slate-500">
+                                  {member.role.toLowerCase()}
+                                </p>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </SectionCard>
+
+                <SectionCard
+                  title="Collaboration Summary"
+                  description="Check the team setup before moving to review."
+                >
+                  <div className="space-y-3 text-sm text-slate-600">
+                    <p>
+                      <span className="font-medium text-slate-900">Lead:</span>{" "}
+                      {leadUser.name}
+                    </p>
+                    <p>
+                      <span className="font-medium text-slate-900">
+                        Members:
+                      </span>{" "}
+                      {selectedTeam.length} selected
+                    </p>
+                    <p>
+                      <span className="font-medium text-slate-900">
+                        Privacy:
+                      </span>{" "}
+                      {privacy === "private" ? "Private" : "Public"}
+                    </p>
+                  </div>
+                </SectionCard>
+              </>
+            ) : null}
+
+            {activeStep === 4 ? (
+              <SectionCard
+                title="Review & Create"
+                description="Confirm the project before you create it."
+              >
+                <div className="space-y-5">
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <SummaryRow
+                      label="Project"
+                      value={values.projectName || "Untitled project"}
+                    />
+                    <SummaryRow label="Key" value={values.projectKey || "-"} />
+                    <SummaryRow
+                      label="Category"
+                      value={values.category || "-"}
+                    />
+                    <SummaryRow
+                      label="Type"
+                      value={
+                        PROJECT_TYPES.find((type) => type.value === projectType)
+                          ?.label ?? "-"
+                      }
+                    />
+                    <SummaryRow
+                      label="Privacy"
+                      value={privacy === "private" ? "Private" : "Public"}
+                    />
+                    <SummaryRow
+                      label="Lead"
+                      value={leadUser.name}
+                      avatar={leadUser.imageUrl}
+                    />
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                    <p className="font-medium text-slate-900">Ready to go?</p>
+                    <p className="mt-1">
+                      Your project details, configuration, and team setup are
+                      now linked together. Press create to finish the mock flow.
+                    </p>
+                  </div>
+                </div>
+              </SectionCard>
+            ) : null}
 
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm">
               <div className="text-sm text-slate-600">
-                Step {activeStep} of {STEPS.length} is active. The next click
-                saves this slice locally.
+                Step {activeStep} of {STEPS.length} is active.
               </div>
               <div className="flex items-center gap-3">
                 <Link href="/projects">
@@ -664,25 +894,39 @@ export default function ProjectCreatePage() {
                     Cancel
                   </Button>
                 </Link>
-                <Button
-                  type="submit"
-                  className="bg-blue-600 px-5 font-medium text-white hover:bg-blue-500"
-                  isDisabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    "Saving..."
-                  ) : activeStep < STEPS.length ? (
-                    <>
-                      Save &amp; Continue
-                      <MdArrowBack className="rotate-180 text-base" />
-                    </>
-                  ) : (
-                    <>
-                      Create Project
-                      <MdSave className="text-base" />
-                    </>
-                  )}
-                </Button>
+
+                {activeStep > 1 ? (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onPress={goToPreviousStep}
+                    className="border-slate-200 text-slate-700"
+                  >
+                    Back
+                  </Button>
+                ) : null}
+
+                {isFinalStep ? (
+                  <Button
+                    type="submit"
+                    className="bg-blue-600 px-5 font-medium text-white hover:bg-blue-500"
+                    isDisabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Saving..." : "Create Project"}
+                    <MdSave className="text-base" />
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    onPress={() => {
+                      void goToNextStep();
+                    }}
+                    className="bg-blue-600 px-5 font-medium text-white hover:bg-blue-500"
+                  >
+                    Next step
+                    <MdArrowBack className="rotate-180 text-base" />
+                  </Button>
+                )}
               </div>
             </div>
           </div>
