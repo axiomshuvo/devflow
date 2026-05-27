@@ -3,6 +3,7 @@
 import { currentUser } from "@/lib/mock-data";
 import { Avatar, Button, Dropdown } from "@heroui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   MdAdd,
@@ -11,8 +12,10 @@ import {
   MdNotifications,
   MdSearch,
 } from "react-icons/md";
+import { toast } from "react-toastify";
 
 export function Topbar() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
   return (
@@ -34,14 +37,16 @@ export function Topbar() {
       {/* Right actions */}
       <div className="flex items-center gap-3 shrink-0">
         {/* Notifications */}
-        <div className="relative">
-          <button className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors">
-            <MdNotifications className="text-xl" />
-          </button>
+        <Link
+          href="/notifications"
+          className="relative w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
+          aria-label="Notifications"
+        >
+          <MdNotifications className="text-xl" />
           <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-white text-[10px] flex items-center justify-center font-semibold">
             6
           </span>
-        </div>
+        </Link>
 
         {/* Help */}
         <button className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors">
@@ -73,9 +78,20 @@ export function Topbar() {
           </Dropdown.Trigger>
           <Dropdown.Popover>
             <Dropdown.Menu>
-              <Dropdown.Item>Profile</Dropdown.Item>
-              <Dropdown.Item>Settings</Dropdown.Item>
-              <Dropdown.Item className="text-red-600">Sign out</Dropdown.Item>
+              <Dropdown.Item
+                onPress={() => router.push("/settings?tab=Profile")}
+              >
+                Profile
+              </Dropdown.Item>
+              <Dropdown.Item onPress={() => router.push("/settings")}>
+                Settings
+              </Dropdown.Item>
+              <Dropdown.Item
+                className="text-red-600"
+                onPress={() => toast.info("Signed out (mock).")}
+              >
+                Sign out
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown.Popover>
         </Dropdown>

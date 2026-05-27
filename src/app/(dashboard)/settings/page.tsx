@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MdAccessTime,
   MdCalendarToday,
@@ -168,6 +168,14 @@ export default function SettingsPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [compactMode, setCompactMode] = useState(true);
   const [liveUpdates, setLiveUpdates] = useState(true);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    if (tab && TOP_TABS.includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col h-full bg-gray-50 overflow-auto">

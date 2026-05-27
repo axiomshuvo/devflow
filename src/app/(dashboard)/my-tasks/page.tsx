@@ -485,7 +485,8 @@ export default function MyTasksPage() {
   }));
 
   const sortedTasks = [...visibleTasks].sort((left, right) => {
-    const timeDiff = new Date(left.dueDate).getTime() - new Date(right.dueDate).getTime();
+    const timeDiff =
+      new Date(left.dueDate).getTime() - new Date(right.dueDate).getTime();
 
     if (timeDiff !== 0) {
       return timeDiff;
@@ -505,7 +506,9 @@ export default function MyTasksPage() {
             : bucket === "This week"
               ? "Due in the next seven days"
               : "Due after this week",
-      tasks: sortedTasks.filter((task) => getDueBucket(task.dueDate) === bucket),
+      tasks: sortedTasks.filter(
+        (task) => getDueBucket(task.dueDate) === bucket,
+      ),
     }),
   );
 
@@ -616,21 +619,22 @@ export default function MyTasksPage() {
             </button>
             {projectOpen ? (
               <div className="absolute right-0 top-9 z-50 w-48 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-                {(["All Projects", ...mockProjects.map((project) => project.name)]).map(
-                  (name) => (
-                    <button
-                      key={name}
-                      type="button"
-                      onClick={() => {
-                        setProjectFilter(name);
-                        setProjectOpen(false);
-                      }}
-                      className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${projectFilter === name ? "bg-blue-50 text-blue-600" : "text-gray-700"}`}
-                    >
-                      {name}
-                    </button>
-                  ),
-                )}
+                {[
+                  "All Projects",
+                  ...mockProjects.map((project) => project.name),
+                ].map((name) => (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => {
+                      setProjectFilter(name);
+                      setProjectOpen(false);
+                    }}
+                    className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${projectFilter === name ? "bg-blue-50 text-blue-600" : "text-gray-700"}`}
+                  >
+                    {name}
+                  </button>
+                ))}
               </div>
             ) : null}
           </div>
@@ -644,23 +648,26 @@ export default function MyTasksPage() {
               }}
               className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 transition-colors hover:border-gray-300"
             >
-              Priority: {priorityFilter} <MdExpandMore className="text-gray-400" />
+              Priority: {priorityFilter}{" "}
+              <MdExpandMore className="text-gray-400" />
             </button>
             {priorityOpen ? (
               <div className="absolute right-0 top-9 z-50 w-36 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-                {(["All", "Low", "Medium", "High", "Critical"] as const).map((priority) => (
-                  <button
-                    key={priority}
-                    type="button"
-                    onClick={() => {
-                      setPriorityFilter(priority);
-                      setPriorityOpen(false);
-                    }}
-                    className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${priorityFilter === priority ? "bg-blue-50 text-blue-600" : "text-gray-700"}`}
-                  >
-                    {priority}
-                  </button>
-                ))}
+                {(["All", "Low", "Medium", "High", "Critical"] as const).map(
+                  (priority) => (
+                    <button
+                      key={priority}
+                      type="button"
+                      onClick={() => {
+                        setPriorityFilter(priority);
+                        setPriorityOpen(false);
+                      }}
+                      className={`w-full px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50 ${priorityFilter === priority ? "bg-blue-50 text-blue-600" : "text-gray-700"}`}
+                    >
+                      {priority}
+                    </button>
+                  ),
+                )}
               </div>
             ) : null}
           </div>
@@ -699,7 +706,11 @@ export default function MyTasksPage() {
           visibleTasks.length > 0 ? (
             <div className="flex gap-5 overflow-x-auto pb-4">
               {visibleColumns.map((column) => (
-                <BoardColumn key={column.id} col={column} onAddTask={handleAddTask} />
+                <BoardColumn
+                  key={column.id}
+                  col={column}
+                  onAddTask={handleAddTask}
+                />
               ))}
             </div>
           ) : (
@@ -738,7 +749,11 @@ export default function MyTasksPage() {
             <div className="space-y-3">
               {sortedTasks.length > 0 ? (
                 sortedTasks.map((task) => (
-                  <TaskListRow key={task.id} task={task} onOpen={() => handleOpenTask(task)} />
+                  <TaskListRow
+                    key={task.id}
+                    task={task}
+                    onOpen={() => handleOpenTask(task)}
+                  />
                 ))
               ) : (
                 <div className="rounded-2xl border border-dashed border-gray-200 bg-white px-6 py-14 text-center">
