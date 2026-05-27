@@ -1,31 +1,34 @@
 # DevFlow — GitHub Copilot Agent Instructions
 
 ## Project Overview
+
 DevFlow is a full-stack issue tracking and team analytics platform (Jira/Linear-style).
 Built as a portfolio project demonstrating full-stack Next.js engineering.
 
 ## Tech Stack
-| Layer | Tool |
-|-------|------|
-| Framework | Next.js 15 (App Router) + TypeScript |
-| Package manager | npm |
-| UI Library | **HeroUI v3** (`@heroui/react@3.x`) |
-| Styling | Tailwind CSS v4 |
-| Auth | Better Auth |
-| Database | MongoDB (Atlas) |
-| ORM | Prisma (MongoDB adapter) |
-| Forms | React Hook Form + Zod |
-| Charts | Recharts |
-| Icons | react-icons |
-| Toast | react-toastify |
-| Utilities | clsx, tailwind-merge, date-fns |
-| Hosting | Vercel |
+
+| Layer           | Tool                                 |
+| --------------- | ------------------------------------ |
+| Framework       | Next.js 15 (App Router) + TypeScript |
+| Package manager | npm                                  |
+| UI Library      | **HeroUI v3** (`@heroui/react@3.x`)  |
+| Styling         | Tailwind CSS v4                      |
+| Auth            | Better Auth                          |
+| Database        | MongoDB (Atlas)                      |
+| ORM             | Prisma (MongoDB adapter)             |
+| Forms           | React Hook Form + Zod                |
+| Charts          | Recharts                             |
+| Icons           | react-icons                          |
+| Toast           | react-toastify                       |
+| Utilities       | clsx, tailwind-merge, date-fns       |
+| Hosting         | Vercel                               |
 
 ---
 
 ## Hard Rules — Always Follow
 
 ### Library Versions
+
 - **ALWAYS** use `@heroui/react@3.x` — never v2 or earlier
 - When adding any new package, check for the latest stable version first
 - Never downgrade a library without explicit user approval
@@ -33,6 +36,7 @@ Built as a portfolio project demonstrating full-stack Next.js engineering.
 - Use `react-toastify` for all toast/notification feedback
 
 ### Code Style
+
 - TypeScript strict mode everywhere
 - 2-space indentation
 - Server Components by default — add `"use client"` only when needed (hooks, browser events, browser APIs)
@@ -40,11 +44,15 @@ Built as a portfolio project demonstrating full-stack Next.js engineering.
 - Import alias `@/*` maps to `src/*`
 
 ### Build Phases
+
 - **Phase 1–3 (current): Frontend only** — all pages use mock data from `src/lib/mock-data.ts`
 - **Phase 4 (later): Backend** — replace mock data with real Prisma + MongoDB queries
 - Do NOT add real database calls until Phase 4 is explicitly started
+- If the required mock data for a requested component does not exist in `src/lib/mock-data.ts`, generate realistic mock arrays or objects and append them to that file before building the UI.
+- If the user asks to implement database calls or Prisma queries during Phases 1–3, politely decline, remind them the project is currently strictly using mock data, and ask whether they want to officially start Phase 4.
 
 ### Git Workflow
+
 - After every major step: check for broken things (`npm run build` or `npm run dev`) → fix → `git push`
 - Commit prefix conventions:
   - `feat:` — new page or feature
@@ -55,6 +63,7 @@ Built as a portfolio project demonstrating full-stack Next.js engineering.
   - `docs:` — README or documentation only
 
 ### Component Patterns
+
 - Use HeroUI v3 components for all UI elements (Button, Card, Input, Table, Modal, etc.)
 - Follow hydration mismatch prevention: use `mounted` state + `useEffect` for any theme/client-only values
 - Shared components live in `src/components/shared/`
@@ -62,24 +71,28 @@ Built as a portfolio project demonstrating full-stack Next.js engineering.
 - Feature components live in `src/components/{feature}/`
 
 ### Forms & Validation
+
 - All forms use React Hook Form + Zod schema validation
 - Zod schemas live in `src/lib/validations.ts` or feature-specific files
 - Show field-level error messages using HeroUI Input `errorMessage` prop
 
 ### Security (apply from day 1)
+
 - Never hardcode secrets — use `.env` for all config, `.env.example` for templates
-- Permissions must be checked server-side, not only hidden in UI
+- Permissions must be enforced server-side once Phase 4 begins; during Phases 1–3, keep access control limited to UI state and mock-data-driven behavior.
 - Never prefix secrets with `NEXT_PUBLIC_` — only public/safe values use that prefix
 - Validate all form inputs with Zod on both client and server
 
 ### Design
-- Design images are provided per page — follow them closely
+
+- Follow the design image attached by the user in the prompt for the specific page. If no image is provided by the user, explicitly ask them to attach it before writing the UI code.
 - Maintain consistent spacing (Tailwind spacing scale), border-radius, and badge colors across all pages
 - Use `dark` mode support via HeroUI theme
 
 ---
 
 ## Folder Structure
+
 ```
 src/
   app/
@@ -146,35 +159,37 @@ prisma/
 ---
 
 ## Routes Map
-| Route | Page |
-|-------|------|
-| `/login` | Sign in |
-| `/register` | Sign up / create workspace |
-| `/dashboard` | Overview — stats, charts, recent activity |
-| `/projects` | All projects — search, filter, cards |
-| `/projects/create` | New project form |
-| `/projects/[id]` | Project detail — issues, team, charts |
-| `/issues` | All issues — table, filters, pagination |
-| `/issues/create` | New issue form |
-| `/issues/[id]` | Issue detail — description, comments, activity |
-| `/my-tasks` | Current user's assigned issues |
-| `/team` | Members, roles, invite |
-| `/analytics` | Charts and productivity metrics |
-| `/settings` | Workspace settings |
-| `/notifications` | Mentions, assignments, alerts |
-| `/github-import` | Import repo issues |
+
+| Route              | Page                                           |
+| ------------------ | ---------------------------------------------- |
+| `/login`           | Sign in                                        |
+| `/register`        | Sign up / create workspace                     |
+| `/dashboard`       | Overview — stats, charts, recent activity      |
+| `/projects`        | All projects — search, filter, cards           |
+| `/projects/create` | New project form                               |
+| `/projects/[id]`   | Project detail — issues, team, charts          |
+| `/issues`          | All issues — table, filters, pagination        |
+| `/issues/create`   | New issue form                                 |
+| `/issues/[id]`     | Issue detail — description, comments, activity |
+| `/my-tasks`        | Current user's assigned issues                 |
+| `/team`            | Members, roles, invite                         |
+| `/analytics`       | Charts and productivity metrics                |
+| `/settings`        | Workspace settings                             |
+| `/notifications`   | Mentions, assignments, alerts                  |
+| `/github-import`   | Import repo issues                             |
 
 ---
 
 ## RBAC (Role-Based Access Control — enforced in Phase 4)
-| Action | Admin | Manager | Developer | Viewer |
-|--------|-------|---------|-----------|--------|
-| Create project | ✅ | ✅ | ❌ | ❌ |
-| Edit project | ✅ | ✅ | ❌ | ❌ |
-| Delete/archive project | ✅ | ❌ | ❌ | ❌ |
-| Create issue | ✅ | ✅ | ✅ | ❌ |
-| Edit any issue | ✅ | ✅ | ❌ | ❌ |
-| Edit assigned issue | ✅ | ✅ | ✅ | ❌ |
-| Comment | ✅ | ✅ | ✅ | read only |
-| Invite member | ✅ | ✅ | ❌ | ❌ |
-| View analytics | ✅ | ✅ | ✅ | ✅ |
+
+| Action                 | Admin | Manager | Developer | Viewer    |
+| ---------------------- | ----- | ------- | --------- | --------- |
+| Create project         | ✅    | ✅      | ❌        | ❌        |
+| Edit project           | ✅    | ✅      | ❌        | ❌        |
+| Delete/archive project | ✅    | ❌      | ❌        | ❌        |
+| Create issue           | ✅    | ✅      | ✅        | ❌        |
+| Edit any issue         | ✅    | ✅      | ❌        | ❌        |
+| Edit assigned issue    | ✅    | ✅      | ✅        | ❌        |
+| Comment                | ✅    | ✅      | ✅        | read only |
+| Invite member          | ✅    | ✅      | ❌        | ❌        |
+| View analytics         | ✅    | ✅      | ✅        | ✅        |
