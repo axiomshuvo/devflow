@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  mockActivity,
-  mockProjects,
-  mockUsers,
-} from "@/lib/mock-data";
+import { mockActivity, mockProjects, mockUsers } from "@/lib/mock-data";
 import { formatDateShort, formatRelativeDate } from "@/lib/utils";
 import { Avatar, Button } from "@heroui/react";
 import Link from "next/link";

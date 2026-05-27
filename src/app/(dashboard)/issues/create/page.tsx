@@ -2,8 +2,8 @@
 
 import { currentUser, mockProjects, mockUsers } from "@/lib/mock-data";
 import type { IssuePriority, IssueType } from "@/types";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import {

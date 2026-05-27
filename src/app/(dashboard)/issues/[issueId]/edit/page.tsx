@@ -3,8 +3,8 @@
 import { mockIssues, mockProjects, mockUsers } from "@/lib/mock-data";
 import { formatDate } from "@/lib/utils";
 import type { IssuePriority, IssueType } from "@/types";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { use, useRef, useState } from "react";
 import {
