@@ -100,3 +100,76 @@ export interface StatsCard {
   change?: number;
   icon?: string;
 }
+
+// ─── Team UI Types ──────────────────────────────────────────────────────────
+
+export type TeamMemberStatus = "Active" | "Away" | "Inactive" | "Pending";
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
+  role: string;
+  team: string;
+  status: TeamMemberStatus;
+  joinedAt: string;
+  isCurrentUser?: boolean;
+}
+
+export interface TeamInvite {
+  id: string;
+  email: string;
+  role: string;
+  invitedAt: string;
+}
+
+export interface TeamRole {
+  id: string;
+  name: string;
+  description: string;
+  memberCount: number;
+  badgeClass: string;
+  chartColor: string;
+}
+
+export interface TeamPermission {
+  id: string;
+  action: string;
+  description: string;
+  access: Record<string, boolean>;
+}
+
+export interface Team {
+  id: string;
+  name: string;
+  description: string;
+  lead: {
+    name: string;
+    role: string;
+    avatarUrl: string;
+  };
+  memberCount: number;
+  projectCount: number;
+  timezone: string;
+  members: { name: string; avatarUrl: string }[];
+}
+
+export interface TeamTrendPoint {
+  date: string;
+  members: number;
+}
+
+export interface TeamPolicy {
+  id: string;
+  label: string;
+  description: string;
+  enabled: boolean;
+}
+
+export interface TeamInviteDefaults {
+  defaultRole: string;
+  expiryDays: number;
+  requireTwoFactor: boolean;
+  allowGuestAccess: boolean;
+}
