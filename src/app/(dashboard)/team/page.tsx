@@ -112,6 +112,7 @@ export default function TeamPage() {
           <MembersPanel
             search={headerSearch}
             onSearchChange={setHeaderSearch}
+            onSwitchTab={setActiveTab}
           />
         ) : null}
         {activeTab === "teams" ? <TeamsPanel /> : null}

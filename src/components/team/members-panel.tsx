@@ -9,7 +9,7 @@ import {
 } from "@/lib/mock-data";
 import { formatDate, formatRelativeDate } from "@/lib/utils";
 import { Avatar, Button } from "@heroui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MdCheckCircle,
   MdFilterList,
@@ -47,15 +47,18 @@ function getInitials(name: string) {
 export function MembersPanel({
   search,
   onSearchChange,
+  onSwitchTab,
 }: {
   search: string;
   onSearchChange: (value: string) => void;
+  onSwitchTab?: (tab: "members" | "teams" | "roles" | "settings") => void;
 }) {
   const [teamFilter, setTeamFilter] = useState("All Teams");
   const [roleFilter, setRoleFilter] = useState("All Roles");
   const [statusFilter, setStatusFilter] = useState("All Status");
   const [currentPage, setCurrentPage] = useState(1);
   const [mounted, setMounted] = useState(false);
+  const pendingInvitesRef = useRef<HTMLDivElement>(null);
   const pageSize = 10;
 
   const roleOptions = useMemo(
@@ -183,6 +186,12 @@ export function MembersPanel({
               </div>
               <button
                 type="button"
+                onClick={() =>
+                  pendingInvitesRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  })
+                }
                 className="text-xs font-medium text-blue-600 hover:text-blue-700"
               >
                 View invites
@@ -204,6 +213,7 @@ export function MembersPanel({
               </div>
               <button
                 type="button"
+                onClick={() => onSwitchTab?.("teams")}
                 className="text-xs font-medium text-blue-600 hover:text-blue-700"
               >
                 Manage teams
@@ -368,8 +378,9 @@ export function MembersPanel({
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 px-4 py-3 text-sm text-gray-500">
             <span>
-              Showing {pageStart + 1} to {pageStart + pageMembers.length} of{" "}
-              {filteredMembers.length} members
+              {filteredMembers.length === 0
+                ? "No members found"
+                : `Showing ${pageStart + 1} to ${pageStart + pageMembers.length} of ${filteredMembers.length} members`}
             </span>
             <div className="flex items-center gap-2">
               <button
@@ -419,12 +430,12 @@ export function MembersPanel({
             <h3 className="text-sm font-semibold text-gray-900">
               Team Overview
             </h3>
-            <button
-              type="button"
+            <a
+              href="/analytics"
               className="text-xs font-medium text-blue-600 hover:text-blue-700"
             >
               View full report
-            </button>
+            </a>
           </div>
           <div className="h-36">
             {mounted ? (
@@ -487,6 +498,7 @@ export function MembersPanel({
             </h3>
             <button
               type="button"
+              onClick={() => onSwitchTab?.("roles")}
               className="text-xs font-medium text-blue-600 hover:text-blue-700"
             >
               View all
@@ -552,13 +564,22 @@ export function MembersPanel({
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-4">
+        <div
+          ref={pendingInvitesRef}
+          className="rounded-xl border border-gray-200 bg-white p-4"
+        >
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-sm font-semibold text-gray-900">
               Pending Invites
             </h3>
             <button
               type="button"
+              onClick={() =>
+                pendingInvitesRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
+              }
               className="text-xs font-medium text-blue-600 hover:text-blue-700"
             >
               View all
