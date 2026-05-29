@@ -55,8 +55,8 @@ export function Topbar() {
 
         {/* User menu */}
         <Dropdown>
-          <Dropdown.Trigger>
-            <button className="flex items-center gap-2.5 pl-3 pr-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+          <Dropdown.Trigger className="flex items-center gap-2.5 pl-3 pr-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <div className="flex items-center gap-2.5">
               <Avatar size="sm" className="w-8 h-8 shrink-0">
                 <Avatar.Image
                   src={currentUser.imageUrl}
@@ -74,7 +74,7 @@ export function Topbar() {
                 </p>
               </div>
               <MdKeyboardArrowDown className="text-gray-400 text-lg" />
-            </button>
+            </div>
           </Dropdown.Trigger>
           <Dropdown.Popover>
             <Dropdown.Menu>

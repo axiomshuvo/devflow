@@ -4,7 +4,14 @@ import { mockTeamMembers, mockTeams } from "@/lib/mock-data";
 import type { Team } from "@/types";
 import { Avatar, Button } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
-import { MdAdd, MdClose, MdGroup, MdLocationOn, MdOutlineEdit, MdPeople } from "react-icons/md";
+import {
+  MdAdd,
+  MdClose,
+  MdGroup,
+  MdLocationOn,
+  MdOutlineEdit,
+  MdPeople,
+} from "react-icons/md";
 
 // ─── New Team Modal ──────────────────────────────────────────────────────────
 

@@ -34,6 +34,45 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Zod validation on all forms, permissions checked server-side
 - Never hardcode secrets, never prefix secrets with NEXT*PUBLIC*
 
+## Session Startup Workflow (Required Every New Chat)
+
+- Before writing or changing code, ALWAYS read in this order:
+  1.  `AGENTS.md`
+  2.  `.github/copilot-instructions.md`
+  3.  `docs/session-handoff.md` (if present)
+  4.  `/memories/repo/devflow-notes.md` (if available via memory tools)
+- If `docs/session-handoff.md` is missing, create it from the template below before starting feature work.
+- After reading startup files, output a short "Startup Summary" with:
+  1.  Current phase (1-4)
+  2.  Must-follow constraints
+  3.  Last completed task
+  4.  Next 3 tasks
+- Do not begin implementation until the Startup Summary is produced.
+
+## Session Handoff File Template
+
+Create or maintain `docs/session-handoff.md` in this format:
+
+- Current Phase: (1/2/3/4)
+- Last Completed: (one line)
+- In Progress: (one line)
+- Next Tasks:
+  1.  ...
+  2.  ...
+  3.  ...
+- Blockers: (if any)
+- Quick Commands:
+  - `npm run build`
+  - `npm run dev`
+- Notes:
+  - short project-specific reminders
+
+## End-Of-Session Workflow
+
+- At the end of each meaningful work session, update `docs/session-handoff.md` with latest status.
+- Record important technical lessons into `/memories/repo/devflow-notes.md`.
+- Before push, follow Git rules above.
+
 See full instructions in `.github/copilot-instructions.md`. If this file is missing or unreadable, proceed using only the DevFlow Project Rules in this file.
 
 <!-- END:devflow-rules -->
