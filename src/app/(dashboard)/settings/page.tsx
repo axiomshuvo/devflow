@@ -1,5 +1,18 @@
 "use client";
 
+import { AutomationSection } from "@/components/settings/general/automation-section";
+import { CustomFieldsSection } from "@/components/settings/general/custom-fields-section";
+import { DataManagementSection } from "@/components/settings/general/data-management-section";
+import { DateTimeSection } from "@/components/settings/general/date-time-section";
+import { DefaultViewsSection } from "@/components/settings/general/default-views-section";
+import { ImportExportSection } from "@/components/settings/general/import-export-section";
+import { LocalizationSection } from "@/components/settings/general/localization-section";
+import { BillingTab } from "@/components/settings/billing-tab";
+import { IntegrationsTab } from "@/components/settings/integrations-tab";
+import { NotificationsTab } from "@/components/settings/notifications-tab";
+import { ProfileTab } from "@/components/settings/profile-tab";
+import { SecurityTab } from "@/components/settings/security-tab";
+import { WorkspaceTab } from "@/components/settings/workspace-tab";
 import {
   SaveFooter,
   SectionHeader,
@@ -128,10 +141,18 @@ export default function SettingsPage() {
       </div>
 
       {/* ── Body ── */}
-      {activeTab !== "General" ? (
-        <div className="flex-1 flex items-center justify-center">
-          <p className="text-gray-400 text-sm">{activeTab} — coming soon</p>
-        </div>
+      {activeTab === "Profile" ? (
+        <ProfileTab />
+      ) : activeTab === "Workspace" ? (
+        <WorkspaceTab />
+      ) : activeTab === "Notifications" ? (
+        <NotificationsTab />
+      ) : activeTab === "Integrations" ? (
+        <IntegrationsTab />
+      ) : activeTab === "Security" ? (
+        <SecurityTab />
+      ) : activeTab === "Billing" ? (
+        <BillingTab />
       ) : (
         <div className="flex gap-5 p-6 items-start">
           {/* Left white card: sub-nav + content */}
@@ -156,12 +177,20 @@ export default function SettingsPage() {
             </nav>
 
             {/* Center content */}
-            {activeSubNav !== "General Settings" ? (
-              <div className="flex-1 flex items-center justify-center p-12">
-                <p className="text-gray-400 text-sm">
-                  {activeSubNav} — coming soon
-                </p>
-              </div>
+            {activeSubNav === "Date & Time" ? (
+              <DateTimeSection />
+            ) : activeSubNav === "Localization" ? (
+              <LocalizationSection />
+            ) : activeSubNav === "Default Views" ? (
+              <DefaultViewsSection />
+            ) : activeSubNav === "Custom Fields" ? (
+              <CustomFieldsSection />
+            ) : activeSubNav === "Automation" ? (
+              <AutomationSection />
+            ) : activeSubNav === "Data Management" ? (
+              <DataManagementSection />
+            ) : activeSubNav === "Import / Export" ? (
+              <ImportExportSection />
             ) : (
               <div className="flex-1 min-w-0">
                 <SectionHeader
