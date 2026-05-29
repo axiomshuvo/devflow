@@ -173,3 +173,47 @@ export interface TeamInviteDefaults {
   requireTwoFactor: boolean;
   allowGuestAccess: boolean;
 }
+
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+export interface CustomField {
+  id: string;
+  name: string;
+  type: "text" | "number" | "date" | "select";
+  required: boolean;
+  applicableTo: "issue" | "project";
+}
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+  trigger: string;
+  action: string;
+  enabled: boolean;
+}
+
+export interface Integration {
+  id: string;
+  name: string;
+  icon: string;
+  connected: boolean;
+  connectedAt?: string;
+  description: string;
+}
+
+export interface ActiveSession {
+  id: string;
+  device: string;
+  browser: string;
+  location: string;
+  lastSeen: string;
+  isCurrent: boolean;
+}
+
+export interface Invoice {
+  id: string;
+  date: string;
+  amount: string;
+  plan: string;
+  status: "paid" | "pending";
+}

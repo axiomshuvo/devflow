@@ -1001,3 +1001,51 @@ export const mockTeamInviteDefaults: TeamInviteDefaults = {
   requireTwoFactor: true,
   allowGuestAccess: false,
 };
+
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+import type {
+  ActiveSession,
+  AutomationRule,
+  CustomField,
+  Integration,
+  Invoice,
+} from "@/types";
+
+export const mockCustomFields: CustomField[] = [
+  { id: "cf1", name: "Story Points", type: "number", required: false, applicableTo: "issue" },
+  { id: "cf2", name: "Sprint", type: "text", required: false, applicableTo: "issue" },
+  { id: "cf3", name: "Release Date", type: "date", required: false, applicableTo: "project" },
+  { id: "cf4", name: "Environment", type: "select", required: true, applicableTo: "issue" },
+  { id: "cf5", name: "Client Name", type: "text", required: false, applicableTo: "project" },
+];
+
+export const mockAutomationRules: AutomationRule[] = [
+  { id: "ar1", name: "Auto-assign on create", trigger: "Issue created", action: "Assign to project lead", enabled: true },
+  { id: "ar2", name: "Close on merge", trigger: "PR merged", action: "Set issue status to Done", enabled: true },
+  { id: "ar3", name: "Overdue alert", trigger: "Due date passed", action: "Send notification to assignee", enabled: false },
+  { id: "ar4", name: "Move to In Review", trigger: "PR opened", action: "Set issue status to In Review", enabled: true },
+];
+
+export const mockIntegrations: Integration[] = [
+  { id: "int1", name: "GitHub", icon: "github", connected: true, connectedAt: "2024-03-10", description: "Sync issues with GitHub repositories." },
+  { id: "int2", name: "Slack", icon: "slack", connected: true, connectedAt: "2024-04-01", description: "Get notifications in Slack channels." },
+  { id: "int3", name: "Jira", icon: "jira", connected: false, description: "Import and sync issues from Jira." },
+  { id: "int4", name: "Figma", icon: "figma", connected: false, description: "Attach Figma designs to issues." },
+  { id: "int5", name: "Notion", icon: "notion", connected: false, description: "Link Notion docs to projects." },
+  { id: "int6", name: "Google Drive", icon: "google", connected: true, connectedAt: "2024-05-15", description: "Attach files from Google Drive." },
+];
+
+export const mockActiveSessions: ActiveSession[] = [
+  { id: "ses1", device: "MacBook Pro", browser: "Chrome 124", location: "Dhaka, BD", lastSeen: "Just now", isCurrent: true },
+  { id: "ses2", device: "iPhone 15", browser: "Safari 17", location: "Dhaka, BD", lastSeen: "2 hours ago", isCurrent: false },
+  { id: "ses3", device: "Windows PC", browser: "Edge 123", location: "Dhaka, BD", lastSeen: "Yesterday", isCurrent: false },
+];
+
+export const mockInvoices: Invoice[] = [
+  { id: "inv1", date: "May 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
+  { id: "inv2", date: "Apr 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
+  { id: "inv3", date: "Mar 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
+  { id: "inv4", date: "Feb 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
+  { id: "inv5", date: "Jan 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
+];
