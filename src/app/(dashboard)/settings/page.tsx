@@ -1,5 +1,6 @@
 "use client";
 
+import { BillingTab } from "@/components/settings/billing-tab";
 import { AutomationSection } from "@/components/settings/general/automation-section";
 import { CustomFieldsSection } from "@/components/settings/general/custom-fields-section";
 import { DataManagementSection } from "@/components/settings/general/data-management-section";
@@ -7,12 +8,10 @@ import { DateTimeSection } from "@/components/settings/general/date-time-section
 import { DefaultViewsSection } from "@/components/settings/general/default-views-section";
 import { ImportExportSection } from "@/components/settings/general/import-export-section";
 import { LocalizationSection } from "@/components/settings/general/localization-section";
-import { BillingTab } from "@/components/settings/billing-tab";
 import { IntegrationsTab } from "@/components/settings/integrations-tab";
 import { NotificationsTab } from "@/components/settings/notifications-tab";
 import { ProfileTab } from "@/components/settings/profile-tab";
 import { SecurityTab } from "@/components/settings/security-tab";
-import { WorkspaceTab } from "@/components/settings/workspace-tab";
 import {
   SaveFooter,
   SectionHeader,
@@ -20,6 +19,7 @@ import {
   SettingRow,
   Toggle,
 } from "@/components/settings/setting-primitives";
+import { WorkspaceTab } from "@/components/settings/workspace-tab";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {

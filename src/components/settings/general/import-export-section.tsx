@@ -4,8 +4,8 @@ import { SectionHeader } from "@/components/settings/setting-primitives";
 import {
   MdCloudDownload,
   MdCloudUpload,
-  MdFilePresent,
   MdCode,
+  MdFilePresent,
 } from "react-icons/md";
 import { SiGithub, SiJira } from "react-icons/si";
 import { toast } from "react-toastify";
@@ -19,7 +19,14 @@ interface ActionRowProps {
   onClick: () => void;
 }
 
-function ActionRow({ icon: Icon, label, description, buttonLabel, buttonStyle, onClick }: ActionRowProps) {
+function ActionRow({
+  icon: Icon,
+  label,
+  description,
+  buttonLabel,
+  buttonStyle,
+  onClick,
+}: ActionRowProps) {
   return (
     <div className="flex items-center gap-4 py-3 px-4 border border-gray-200 rounded-xl">
       <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">

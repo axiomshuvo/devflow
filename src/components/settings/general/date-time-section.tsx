@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  SectionHeader,
   SaveFooter,
-  SettingRow,
+  SectionHeader,
   SelectControl,
+  SettingRow,
   Toggle,
 } from "@/components/settings/setting-primitives";
 import { useState } from "react";
@@ -38,7 +38,11 @@ export function DateTimeSection() {
           label="Date Format"
           desc="Choose how dates are displayed."
         >
-          <SelectControl value={dateFormat} onChange={setDateFormat} options={DATE_FORMATS} />
+          <SelectControl
+            value={dateFormat}
+            onChange={setDateFormat}
+            options={DATE_FORMATS}
+          />
         </SettingRow>
         <SettingRow
           icon={MdAccessTime}
@@ -47,7 +51,11 @@ export function DateTimeSection() {
           label="Time Format"
           desc="Choose between 12-hour or 24-hour format."
         >
-          <SelectControl value={timeFormat} onChange={setTimeFormat} options={TIME_FORMATS} />
+          <SelectControl
+            value={timeFormat}
+            onChange={setTimeFormat}
+            options={TIME_FORMATS}
+          />
         </SettingRow>
         <SettingRow
           icon={MdSchedule}

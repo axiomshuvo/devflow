@@ -1,24 +1,41 @@
 "use client";
 
 import {
-  SectionHeader,
   SaveFooter,
-  SettingRow,
+  SectionHeader,
   SelectControl,
+  SettingRow,
 } from "@/components/settings/setting-primitives";
 import { useState } from "react";
 import {
-  MdLanguage,
   MdAttachMoney,
-  MdFormatListNumbered,
   MdCalendarToday,
+  MdFormatListNumbered,
+  MdLanguage,
 } from "react-icons/md";
 
-const CURRENCIES = ["USD ($)", "EUR (€)", "GBP (£)", "BDT (৳)", "INR (₹)", "SGD (S$)"];
+const CURRENCIES = [
+  "USD ($)",
+  "EUR (€)",
+  "GBP (£)",
+  "BDT (৳)",
+  "INR (₹)",
+  "SGD (S$)",
+];
 const NUMBER_FORMATS = ["1,234.56 (English)", "1.234,56 (European)"];
 const FISCAL_MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 export function LocalizationSection() {
@@ -40,7 +57,11 @@ export function LocalizationSection() {
           label="Language"
           desc="Workspace display language."
         >
-          <SelectControl value="English (US)" onChange={() => {}} options={["English (US)"]} />
+          <SelectControl
+            value="English (US)"
+            onChange={() => {}}
+            options={["English (US)"]}
+          />
         </SettingRow>
         <SettingRow
           icon={MdAttachMoney}
@@ -49,7 +70,11 @@ export function LocalizationSection() {
           label="Currency"
           desc="Default currency for billing and reports."
         >
-          <SelectControl value={currency} onChange={setCurrency} options={CURRENCIES} />
+          <SelectControl
+            value={currency}
+            onChange={setCurrency}
+            options={CURRENCIES}
+          />
         </SettingRow>
         <SettingRow
           icon={MdFormatListNumbered}
@@ -58,7 +83,11 @@ export function LocalizationSection() {
           label="Number Format"
           desc="How numbers and decimals are formatted."
         >
-          <SelectControl value={numberFormat} onChange={setNumberFormat} options={NUMBER_FORMATS} />
+          <SelectControl
+            value={numberFormat}
+            onChange={setNumberFormat}
+            options={NUMBER_FORMATS}
+          />
         </SettingRow>
         <SettingRow
           icon={MdCalendarToday}
@@ -67,7 +96,11 @@ export function LocalizationSection() {
           label="Fiscal Year Start"
           desc="First month of your fiscal year."
         >
-          <SelectControl value={fiscalStart} onChange={setFiscalStart} options={FISCAL_MONTHS} />
+          <SelectControl
+            value={fiscalStart}
+            onChange={setFiscalStart}
+            options={FISCAL_MONTHS}
+          />
         </SettingRow>
       </div>
       <SaveFooter onSave={() => {}} />

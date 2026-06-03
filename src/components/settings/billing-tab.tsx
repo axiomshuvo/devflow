@@ -19,8 +19,12 @@ export function BillingTab() {
       {/* Current Plan */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Current Plan</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Your active subscription details.</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Current Plan
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Your active subscription details.
+          </p>
         </div>
         <div className="px-6 py-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -34,7 +38,9 @@ export function BillingTab() {
                   Active
                 </span>
               </div>
-              <p className="text-sm text-gray-500 mt-0.5">$29/month · Renews Jun 1, 2026</p>
+              <p className="text-sm text-gray-500 mt-0.5">
+                $29/month · Renews Jun 1, 2026
+              </p>
             </div>
           </div>
           <button
@@ -62,8 +68,12 @@ export function BillingTab() {
       {/* Payment Method */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Payment Method</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Your current billing payment method.</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Payment Method
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Your current billing payment method.
+          </p>
         </div>
         <div className="px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -71,13 +81,19 @@ export function BillingTab() {
               <MdCreditCard className="text-gray-600 text-xl" />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-800">•••• •••• •••• 4242</p>
-              <p className="text-xs text-gray-500 mt-0.5">Visa · Expires 12/27</p>
+              <p className="text-sm font-medium text-gray-800">
+                •••• •••• •••• 4242
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Visa · Expires 12/27
+              </p>
             </div>
           </div>
           <button
             type="button"
-            onClick={() => toast.info("Payment method update coming in Phase 4.")}
+            onClick={() =>
+              toast.info("Payment method update coming in Phase 4.")
+            }
             className="flex items-center gap-1.5 px-4 py-2 border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <MdSync className="text-base" /> Update
@@ -88,8 +104,12 @@ export function BillingTab() {
       {/* Invoices */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Invoice History</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Download past invoices for your records.</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Invoice History
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Download past invoices for your records.
+          </p>
         </div>
         <div className="divide-y divide-gray-100">
           {invoices.map((inv) => (
@@ -98,7 +118,9 @@ export function BillingTab() {
                 <p className="text-sm font-medium text-gray-800">{inv.date}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{inv.plan} Plan</p>
               </div>
-              <span className="text-sm font-semibold text-gray-800 w-16 text-right">{inv.amount}</span>
+              <span className="text-sm font-semibold text-gray-800 w-16 text-right">
+                {inv.amount}
+              </span>
               <span
                 className={`px-2 py-0.5 rounded-full text-[10px] font-semibold w-14 text-center ${
                   inv.status === "paid"
@@ -110,7 +132,9 @@ export function BillingTab() {
               </span>
               <button
                 type="button"
-                onClick={() => toast.success(`Invoice ${inv.id} downloaded (mock).`)}
+                onClick={() =>
+                  toast.success(`Invoice ${inv.id} downloaded (mock).`)
+                }
                 className="flex items-center gap-1 px-3 py-1.5 border border-gray-200 text-xs text-gray-600 rounded-lg hover:bg-gray-50 transition-colors shrink-0"
               >
                 <MdDownload className="text-sm" /> PDF

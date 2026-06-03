@@ -1,15 +1,18 @@
 "use client";
 
-import { Toggle, SelectControl } from "@/components/settings/setting-primitives";
+import {
+  SelectControl,
+  Toggle,
+} from "@/components/settings/setting-primitives";
 import { mockActiveSessions } from "@/lib/mock-data";
 import type { ActiveSession } from "@/types";
 import { useState } from "react";
 import {
   MdComputer,
+  MdLogout,
   MdPhoneAndroid,
   MdQrCode2,
   MdShield,
-  MdLogout,
 } from "react-icons/md";
 import { toast } from "react-toastify";
 
@@ -29,8 +32,12 @@ export function SecurityTab() {
       {/* 2FA */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Two-Factor Authentication</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Add an extra layer of security to your account.</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Two-Factor Authentication
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Add an extra layer of security to your account.
+          </p>
         </div>
         <div className="px-6 py-5">
           <div className="flex items-center justify-between">
@@ -40,7 +47,9 @@ export function SecurityTab() {
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-800">Enable 2FA</p>
-                <p className="text-xs text-gray-500">Authenticate using an authenticator app.</p>
+                <p className="text-xs text-gray-500">
+                  Authenticate using an authenticator app.
+                </p>
               </div>
             </div>
             <Toggle checked={twoFactor} onChange={setTwoFactor} />
@@ -51,8 +60,12 @@ export function SecurityTab() {
                 <MdQrCode2 className="text-gray-400 text-5xl" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-700">Scan with your authenticator app</p>
-                <p className="text-xs text-gray-500 mt-1">QR code setup available in Phase 4.</p>
+                <p className="text-sm font-medium text-gray-700">
+                  Scan with your authenticator app
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  QR code setup available in Phase 4.
+                </p>
                 <button
                   type="button"
                   onClick={() => toast.info("2FA setup coming in Phase 4.")}
@@ -69,14 +82,22 @@ export function SecurityTab() {
       {/* Password Policy */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Password Policy</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Set requirements for workspace passwords.</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Password Policy
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Set requirements for workspace passwords.
+          </p>
         </div>
         <div className="px-6 py-5 flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-800">Minimum Password Length</p>
-              <p className="text-xs text-gray-500 mt-0.5">Minimum characters required.</p>
+              <p className="text-sm font-medium text-gray-800">
+                Minimum Password Length
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Minimum characters required.
+              </p>
             </div>
             <div className="w-28">
               <SelectControl
@@ -88,8 +109,12 @@ export function SecurityTab() {
           </div>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-800">Require Special Characters</p>
-              <p className="text-xs text-gray-500 mt-0.5">Password must include !, @, #, etc.</p>
+              <p className="text-sm font-medium text-gray-800">
+                Require Special Characters
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Password must include !, @, #, etc.
+              </p>
             </div>
             <Toggle checked={requireSpecial} onChange={setRequireSpecial} />
           </div>
@@ -108,8 +133,12 @@ export function SecurityTab() {
       {/* Active Sessions */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Active Sessions</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Devices currently signed in to your account.</p>
+          <h2 className="text-base font-semibold text-gray-900">
+            Active Sessions
+          </h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Devices currently signed in to your account.
+          </p>
         </div>
         <div className="divide-y divide-gray-100">
           {sessions.map((s) => (
@@ -123,7 +152,9 @@ export function SecurityTab() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium text-gray-800">{s.device}</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    {s.device}
+                  </p>
                   {s.isCurrent && (
                     <span className="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-semibold rounded-full">
                       Current

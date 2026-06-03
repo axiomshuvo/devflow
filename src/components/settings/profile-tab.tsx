@@ -8,7 +8,9 @@ import { toast } from "react-toastify";
 export function ProfileTab() {
   const [name, setName] = useState(currentUser.name);
   const [jobTitle, setJobTitle] = useState("Senior Developer");
-  const [bio, setBio] = useState("Building great products one commit at a time.");
+  const [bio, setBio] = useState(
+    "Building great products one commit at a time.",
+  );
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -48,8 +50,12 @@ export function ProfileTab() {
         {/* Profile info */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-base font-semibold text-gray-900">Profile Information</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Update your personal details.</p>
+            <h2 className="text-base font-semibold text-gray-900">
+              Profile Information
+            </h2>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Update your personal details.
+            </p>
           </div>
           <div className="px-6 py-5 flex flex-col gap-5">
             {/* Avatar */}
@@ -74,7 +80,9 @@ export function ProfileTab() {
 
             {/* Name */}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Full Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Full Name
+              </label>
               <input
                 type="text"
                 value={name}
@@ -85,19 +93,25 @@ export function ProfileTab() {
 
             {/* Email (read-only) */}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Email Address</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Email Address
+              </label>
               <input
                 type="email"
                 readOnly
                 value={currentUser.email}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-400 focus:outline-none"
               />
-              <p className="text-xs text-gray-400 mt-1">Email cannot be changed here.</p>
+              <p className="text-xs text-gray-400 mt-1">
+                Email cannot be changed here.
+              </p>
             </div>
 
             {/* Job Title */}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Job Title</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Job Title
+              </label>
               <input
                 type="text"
                 value={jobTitle}
@@ -108,7 +122,9 @@ export function ProfileTab() {
 
             {/* Bio */}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Bio</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Bio
+              </label>
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -132,17 +148,41 @@ export function ProfileTab() {
         {/* Change password */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-base font-semibold text-gray-900">Change Password</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Use a strong password to keep your account secure.</p>
+            <h2 className="text-base font-semibold text-gray-900">
+              Change Password
+            </h2>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Use a strong password to keep your account secure.
+            </p>
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
             {[
-              { label: "Current Password", value: currentPw, setter: setCurrentPw, show: showCurrent, toggleShow: () => setShowCurrent((v) => !v) },
-              { label: "New Password", value: newPw, setter: setNewPw, show: showNew, toggleShow: () => setShowNew((v) => !v) },
-              { label: "Confirm New Password", value: confirmPw, setter: setConfirmPw, show: showConfirm, toggleShow: () => setShowConfirm((v) => !v) },
+              {
+                label: "Current Password",
+                value: currentPw,
+                setter: setCurrentPw,
+                show: showCurrent,
+                toggleShow: () => setShowCurrent((v) => !v),
+              },
+              {
+                label: "New Password",
+                value: newPw,
+                setter: setNewPw,
+                show: showNew,
+                toggleShow: () => setShowNew((v) => !v),
+              },
+              {
+                label: "Confirm New Password",
+                value: confirmPw,
+                setter: setConfirmPw,
+                show: showConfirm,
+                toggleShow: () => setShowConfirm((v) => !v),
+              },
             ].map(({ label, value, setter, show, toggleShow }) => (
               <div key={label}>
-                <label className="block text-xs font-medium text-gray-700 mb-1">{label}</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  {label}
+                </label>
                 <div className="relative">
                   <input
                     type={show ? "text" : "password"}
@@ -155,7 +195,11 @@ export function ProfileTab() {
                     onClick={toggleShow}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {show ? <MdVisibilityOff className="text-base" /> : <MdVisibility className="text-base" />}
+                    {show ? (
+                      <MdVisibilityOff className="text-base" />
+                    ) : (
+                      <MdVisibility className="text-base" />
+                    )}
                   </button>
                 </div>
               </div>

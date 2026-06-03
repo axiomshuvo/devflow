@@ -1,7 +1,9 @@
 "use client";
 
-import { SectionHeader } from "@/components/settings/setting-primitives";
-import { Toggle } from "@/components/settings/setting-primitives";
+import {
+  SectionHeader,
+  Toggle,
+} from "@/components/settings/setting-primitives";
 import { mockAutomationRules } from "@/lib/mock-data";
 import type { AutomationRule } from "@/types";
 import { useState } from "react";
@@ -13,7 +15,7 @@ export function AutomationSection() {
 
   function toggleRule(id: string) {
     setRules((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, enabled: !r.enabled } : r))
+      prev.map((r) => (r.id === id ? { ...r, enabled: !r.enabled } : r)),
     );
   }
 
@@ -41,12 +43,17 @@ export function AutomationSection() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-gray-800">{rule.name}</p>
               <p className="text-xs text-gray-500 mt-0.5">
-                <span className="font-medium text-gray-600">When:</span> {rule.trigger}
+                <span className="font-medium text-gray-600">When:</span>{" "}
+                {rule.trigger}
                 &nbsp;→&nbsp;
-                <span className="font-medium text-gray-600">Then:</span> {rule.action}
+                <span className="font-medium text-gray-600">Then:</span>{" "}
+                {rule.action}
               </p>
             </div>
-            <Toggle checked={rule.enabled} onChange={() => toggleRule(rule.id)} />
+            <Toggle
+              checked={rule.enabled}
+              onChange={() => toggleRule(rule.id)}
+            />
             <button
               type="button"
               onClick={() => deleteRule(rule.id)}

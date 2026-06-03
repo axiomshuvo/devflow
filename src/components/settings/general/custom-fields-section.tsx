@@ -14,7 +14,8 @@ export function CustomFieldsSection() {
   const [fields, setFields] = useState<CustomField[]>(mockCustomFields);
   const [newName, setNewName] = useState("");
   const [newType, setNewType] = useState<CustomField["type"]>("text");
-  const [newApplicable, setNewApplicable] = useState<CustomField["applicableTo"]>("issue");
+  const [newApplicable, setNewApplicable] =
+    useState<CustomField["applicableTo"]>("issue");
 
   function addField() {
     if (!newName.trim()) return;
@@ -58,7 +59,9 @@ export function CustomFieldsSection() {
           <tbody className="divide-y divide-gray-50">
             {fields.map((f) => (
               <tr key={f.id}>
-                <td className="py-2.5 pr-4 font-medium text-gray-800">{f.name}</td>
+                <td className="py-2.5 pr-4 font-medium text-gray-800">
+                  {f.name}
+                </td>
                 <td className="py-2.5 pr-4">
                   <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs capitalize">
                     {f.type}
@@ -71,7 +74,9 @@ export function CustomFieldsSection() {
                 </td>
                 <td className="py-2.5 pr-4">
                   {f.required ? (
-                    <span className="px-2 py-0.5 rounded-full bg-red-50 text-red-600 text-xs">Yes</span>
+                    <span className="px-2 py-0.5 rounded-full bg-red-50 text-red-600 text-xs">
+                      Yes
+                    </span>
                   ) : (
                     <span className="text-xs text-gray-400">No</span>
                   )}
@@ -102,26 +107,38 @@ export function CustomFieldsSection() {
           <div className="relative">
             <select
               value={newType}
-              onChange={(e) => setNewType(e.target.value as CustomField["type"])}
+              onChange={(e) =>
+                setNewType(e.target.value as CustomField["type"])
+              }
               className="appearance-none px-3 py-2 pr-7 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {FIELD_TYPES.map((t) => (
-                <option key={t} value={t} className="capitalize">{t}</option>
+                <option key={t} value={t} className="capitalize">
+                  {t}
+                </option>
               ))}
             </select>
-            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">▾</span>
+            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+              ▾
+            </span>
           </div>
           <div className="relative">
             <select
               value={newApplicable}
-              onChange={(e) => setNewApplicable(e.target.value as CustomField["applicableTo"])}
+              onChange={(e) =>
+                setNewApplicable(e.target.value as CustomField["applicableTo"])
+              }
               className="appearance-none px-3 py-2 pr-7 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {APPLICABLE_TO.map((a) => (
-                <option key={a} value={a} className="capitalize">{a}</option>
+                <option key={a} value={a} className="capitalize">
+                  {a}
+                </option>
               ))}
             </select>
-            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">▾</span>
+            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+              ▾
+            </span>
           </div>
           <button
             type="button"

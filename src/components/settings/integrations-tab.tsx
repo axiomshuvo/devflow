@@ -3,18 +3,14 @@
 import { mockIntegrations } from "@/lib/mock-data";
 import type { Integration } from "@/types";
 import { useState } from "react";
+import { MdCheckCircle, MdLink, MdLinkOff } from "react-icons/md";
 import {
-  MdCheckCircle,
-  MdLinkOff,
-  MdLink,
-} from "react-icons/md";
-import {
-  SiGithub,
-  SiSlack,
-  SiJira,
   SiFigma,
-  SiNotion,
+  SiGithub,
   SiGoogle,
+  SiJira,
+  SiNotion,
+  SiSlack,
 } from "react-icons/si";
 import { toast } from "react-toastify";
 
@@ -37,7 +33,8 @@ const COLOR_MAP: Record<string, string> = {
 };
 
 export function IntegrationsTab() {
-  const [integrations, setIntegrations] = useState<Integration[]>(mockIntegrations);
+  const [integrations, setIntegrations] =
+    useState<Integration[]>(mockIntegrations);
 
   function toggle(id: string) {
     setIntegrations((prev) =>
@@ -48,9 +45,13 @@ export function IntegrationsTab() {
           return { ...int, connected: false, connectedAt: undefined };
         } else {
           toast.success(`${int.name} connected (mock).`);
-          return { ...int, connected: true, connectedAt: new Date().toISOString().split("T")[0] };
+          return {
+            ...int,
+            connected: true,
+            connectedAt: new Date().toISOString().split("T")[0],
+          };
         }
-      })
+      }),
     );
   }
 
@@ -58,7 +59,9 @@ export function IntegrationsTab() {
     <div className="p-6">
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-6 py-5 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">Integrations</h2>
+          <h2 className="text-base font-semibold text-gray-900">
+            Integrations
+          </h2>
           <p className="text-sm text-gray-500 mt-0.5">
             Connect DevFlow with your favorite tools.
           </p>
@@ -77,12 +80,16 @@ export function IntegrationsTab() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-semibold text-gray-800">{int.name}</p>
+                    <p className="text-sm font-semibold text-gray-800">
+                      {int.name}
+                    </p>
                     {int.connected && (
                       <MdCheckCircle className="text-green-500 text-sm" />
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-0.5">{int.description}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {int.description}
+                  </p>
                   {int.connected && int.connectedAt && (
                     <p className="text-[10px] text-gray-400 mt-1">
                       Connected {int.connectedAt}
@@ -98,9 +105,13 @@ export function IntegrationsTab() {
                     }`}
                   >
                     {int.connected ? (
-                      <><MdLinkOff className="text-sm" /> Disconnect</>
+                      <>
+                        <MdLinkOff className="text-sm" /> Disconnect
+                      </>
                     ) : (
-                      <><MdLink className="text-sm" /> Connect</>
+                      <>
+                        <MdLink className="text-sm" /> Connect
+                      </>
                     )}
                   </button>
                 </div>

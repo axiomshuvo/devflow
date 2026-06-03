@@ -1,10 +1,15 @@
 "use client";
 
+import { Toggle } from "@/components/settings/setting-primitives";
 import { currentUser, mockUsers } from "@/lib/mock-data";
 import { useState } from "react";
-import { MdContentCopy, MdDeleteForever, MdImage, MdLink } from "react-icons/md";
+import {
+  MdContentCopy,
+  MdDeleteForever,
+  MdImage,
+  MdLink,
+} from "react-icons/md";
 import { toast } from "react-toastify";
-import { Toggle } from "@/components/settings/setting-primitives";
 
 export function WorkspaceTab() {
   const [workspaceName, setWorkspaceName] = useState("DevFlow");
@@ -16,8 +21,12 @@ export function WorkspaceTab() {
         {/* Identity */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-base font-semibold text-gray-900">Workspace Identity</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Manage your workspace name and branding.</p>
+            <h2 className="text-base font-semibold text-gray-900">
+              Workspace Identity
+            </h2>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Manage your workspace name and branding.
+            </p>
           </div>
           <div className="px-6 py-5 flex flex-col gap-5">
             {/* Icon */}
@@ -39,7 +48,9 @@ export function WorkspaceTab() {
 
             {/* Name */}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Workspace Name</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Workspace Name
+              </label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -59,7 +70,9 @@ export function WorkspaceTab() {
 
             {/* Slug */}
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Workspace URL</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Workspace URL
+              </label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -69,7 +82,12 @@ export function WorkspaceTab() {
                 />
                 <button
                   type="button"
-                  onClick={() => { navigator.clipboard.writeText("https://devflow.app/workspace/devflow"); toast.success("URL copied!"); }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      "https://devflow.app/workspace/devflow",
+                    );
+                    toast.success("URL copied!");
+                  }}
                   className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors shrink-0"
                 >
                   <MdContentCopy className="text-base" /> Copy
@@ -82,14 +100,20 @@ export function WorkspaceTab() {
         {/* Invite link */}
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100">
-            <h2 className="text-base font-semibold text-gray-900">Invite Link</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Share this link to invite people to your workspace.</p>
+            <h2 className="text-base font-semibold text-gray-900">
+              Invite Link
+            </h2>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Share this link to invite people to your workspace.
+            </p>
           </div>
           <div className="px-6 py-5 flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <MdLink className="text-gray-500" />
-                <span className="text-sm text-gray-700 font-medium">Enable Invite Link</span>
+                <span className="text-sm text-gray-700 font-medium">
+                  Enable Invite Link
+                </span>
               </div>
               <Toggle checked={inviteLink} onChange={setInviteLink} />
             </div>
@@ -103,7 +127,12 @@ export function WorkspaceTab() {
                 />
                 <button
                   type="button"
-                  onClick={() => { navigator.clipboard.writeText("https://devflow.app/invite/mock-token-abc123"); toast.success("Invite link copied!"); }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      "https://devflow.app/invite/mock-token-abc123",
+                    );
+                    toast.success("Invite link copied!");
+                  }}
                   className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-sm text-gray-700 rounded-lg hover:bg-gray-50 transition-colors shrink-0"
                 >
                   <MdContentCopy className="text-base" /> Copy
@@ -117,15 +146,26 @@ export function WorkspaceTab() {
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-5 border-b border-gray-100">
             <h2 className="text-base font-semibold text-gray-900">Members</h2>
-            <p className="text-sm text-gray-500 mt-0.5">Overview of workspace membership.</p>
+            <p className="text-sm text-gray-500 mt-0.5">
+              Overview of workspace membership.
+            </p>
           </div>
           <div className="px-6 py-5 grid grid-cols-3 gap-4">
             {[
               { label: "Total Members", value: mockUsers.length },
-              { label: "Admins", value: mockUsers.filter((u) => u.role === "ADMIN").length },
-              { label: "Developers", value: mockUsers.filter((u) => u.role === "DEVELOPER").length },
+              {
+                label: "Admins",
+                value: mockUsers.filter((u) => u.role === "ADMIN").length,
+              },
+              {
+                label: "Developers",
+                value: mockUsers.filter((u) => u.role === "DEVELOPER").length,
+              },
             ].map(({ label, value }) => (
-              <div key={label} className="text-center p-3 bg-gray-50 rounded-xl">
+              <div
+                key={label}
+                className="text-center p-3 bg-gray-50 rounded-xl"
+              >
                 <p className="text-2xl font-bold text-gray-900">{value}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{label}</p>
               </div>
@@ -141,7 +181,9 @@ export function WorkspaceTab() {
           </p>
           <button
             type="button"
-            onClick={() => toast.error("Only workspace Admins can delete the workspace.")}
+            onClick={() =>
+              toast.error("Only workspace Admins can delete the workspace.")
+            }
             className="flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg opacity-60 cursor-not-allowed"
           >
             <MdDeleteForever className="text-base" />
@@ -155,10 +197,17 @@ export function WorkspaceTab() {
         <h3 className="text-sm font-semibold text-gray-900 mb-3">Your Role</h3>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
-            {currentUser.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+            {currentUser.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2)}
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-800">{currentUser.name}</p>
+            <p className="text-sm font-semibold text-gray-800">
+              {currentUser.name}
+            </p>
             <span className="inline-flex mt-0.5 px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-semibold rounded-full capitalize">
               {currentUser.role.toLowerCase()}
             </span>
