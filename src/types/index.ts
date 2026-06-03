@@ -101,6 +101,169 @@ export interface StatsCard {
   icon?: string;
 }
 
+// ─── Analytics Types ────────────────────────────────────────────────────────
+
+export type AnalyticsIconKey =
+  | "totalIssues"
+  | "completedIssues"
+  | "inProgress"
+  | "bugIssues"
+  | "activeMembers"
+  | "projects"
+  | "velocity"
+  | "onTrack"
+  | "atRisk"
+  | "overdue"
+  | "cycleTime"
+  | "focus"
+  | "throughput";
+
+export interface AnalyticsStat {
+  id: string;
+  label: string;
+  value: number | string;
+  change: number;
+  changeLabel: string;
+  iconKey: AnalyticsIconKey;
+  iconBg: string;
+  iconColor: string;
+}
+
+export interface AnalyticsTrendPoint {
+  label: string;
+  created: number;
+  closed: number;
+  resolved: number;
+}
+
+export interface AnalyticsBreakdownItem {
+  name: string;
+  value: number;
+  color: string;
+}
+
+export interface AnalyticsProjectSummary {
+  id: string;
+  name: string;
+  key: string;
+  icon: string;
+  openIssues: number;
+  completed: number;
+  progress: number;
+  velocity: number;
+  health: "On Track" | "At Risk" | "Blocked";
+  risk: "Low" | "Medium" | "High";
+  barColor: string;
+}
+
+export interface AnalyticsTeamWorkload {
+  id: string;
+  name: string;
+  initials: string;
+  color: string;
+  inProgress: number;
+  completed: number;
+}
+
+export interface AnalyticsSprintProgress {
+  sprint: string;
+  dateRange: string;
+  progress: number;
+  completed: string;
+  daysLeft: string;
+  status: string;
+}
+
+export interface AnalyticsProjectVelocityPoint {
+  sprint: string;
+  completed: number;
+  scope: number;
+}
+
+export interface AnalyticsRiskSummary {
+  label: string;
+  value: number;
+  color: string;
+}
+
+export interface AnalyticsIssueAgingPoint {
+  bucket: string;
+  count: number;
+}
+
+export interface AnalyticsTriagePoint {
+  week: string;
+  triaged: number;
+  created: number;
+}
+
+export interface AnalyticsSlaBreach {
+  id: string;
+  issueKey: string;
+  title: string;
+  priority: IssuePriority;
+  daysOver: number;
+}
+
+export interface AnalyticsTeamLeaderboard {
+  id: string;
+  name: string;
+  role: string;
+  completed: number;
+  quality: number;
+  trend: number;
+}
+
+export interface AnalyticsFocusPoint {
+  week: string;
+  focusHours: number;
+  meetingHours: number;
+}
+
+export interface AnalyticsReport {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  lastRun: string;
+  owner: string;
+  format: string;
+}
+
+export interface AnalyticsExportRecord {
+  id: string;
+  name: string;
+  format: string;
+  size: string;
+  createdAt: string;
+  status: "Complete" | "Failed" | "Processing";
+}
+
+export interface AnalyticsSchedule {
+  id: string;
+  name: string;
+  frequency: string;
+  nextRun: string;
+  recipients: number;
+}
+
+export interface AnalyticsDoraMetric {
+  id: string;
+  label: string;
+  value: string;
+  change: number;
+  target: string;
+  status: "Good" | "Warn" | "Critical";
+}
+
+export interface AnalyticsDoraTrendPoint {
+  month: string;
+  deploys: number;
+  leadTime: number;
+  failureRate: number;
+  mttr: number;
+}
+
 // ─── Team UI Types ──────────────────────────────────────────────────────────
 
 export type TeamMemberStatus = "Active" | "Away" | "Inactive" | "Pending";

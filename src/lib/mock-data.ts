@@ -1,5 +1,23 @@
 import type {
   ActivityLog,
+  AnalyticsBreakdownItem,
+  AnalyticsDoraMetric,
+  AnalyticsDoraTrendPoint,
+  AnalyticsExportRecord,
+  AnalyticsFocusPoint,
+  AnalyticsIssueAgingPoint,
+  AnalyticsProjectSummary,
+  AnalyticsProjectVelocityPoint,
+  AnalyticsReport,
+  AnalyticsRiskSummary,
+  AnalyticsSchedule,
+  AnalyticsSlaBreach,
+  AnalyticsSprintProgress,
+  AnalyticsStat,
+  AnalyticsTeamLeaderboard,
+  AnalyticsTeamWorkload,
+  AnalyticsTrendPoint,
+  AnalyticsTriagePoint,
   Comment,
   Issue,
   Notification,
@@ -433,6 +451,586 @@ export const issuesByPriority = [
   { priority: "High", count: 11 },
   { priority: "Medium", count: 22 },
   { priority: "Low", count: 15 },
+];
+
+// ─── Analytics (Phase 2 mock data) ─────────────────────────────────────────
+
+export const analyticsOverviewStats: AnalyticsStat[] = [
+  {
+    id: "total",
+    label: "Total Issues",
+    value: 134,
+    change: 18,
+    changeLabel: "vs last 30 days",
+    iconKey: "totalIssues",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-600",
+  },
+  {
+    id: "completed",
+    label: "Completed Issues",
+    value: 42,
+    change: 24,
+    changeLabel: "vs last 30 days",
+    iconKey: "completedIssues",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-600",
+  },
+  {
+    id: "progress",
+    label: "In Progress",
+    value: 27,
+    change: -8,
+    changeLabel: "vs last 30 days",
+    iconKey: "inProgress",
+    iconBg: "bg-amber-50",
+    iconColor: "text-amber-600",
+  },
+  {
+    id: "bugs",
+    label: "Bug Issues",
+    value: 23,
+    change: -12,
+    changeLabel: "vs last 30 days",
+    iconKey: "bugIssues",
+    iconBg: "bg-purple-50",
+    iconColor: "text-purple-600",
+  },
+  {
+    id: "members",
+    label: "Active Members",
+    value: 21,
+    change: 5,
+    changeLabel: "vs last 30 days",
+    iconKey: "activeMembers",
+    iconBg: "bg-teal-50",
+    iconColor: "text-teal-600",
+  },
+];
+
+export const analyticsProjectStats: AnalyticsStat[] = [
+  {
+    id: "active-projects",
+    label: "Active Projects",
+    value: 12,
+    change: 10,
+    changeLabel: "vs last 30 days",
+    iconKey: "projects",
+    iconBg: "bg-indigo-50",
+    iconColor: "text-indigo-600",
+  },
+  {
+    id: "velocity",
+    label: "Avg Velocity",
+    value: "48 pts",
+    change: 6,
+    changeLabel: "vs last 30 days",
+    iconKey: "velocity",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-600",
+  },
+  {
+    id: "on-track",
+    label: "On Track",
+    value: 6,
+    change: 12,
+    changeLabel: "vs last 30 days",
+    iconKey: "onTrack",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-600",
+  },
+  {
+    id: "at-risk",
+    label: "At Risk",
+    value: 3,
+    change: -8,
+    changeLabel: "vs last 30 days",
+    iconKey: "atRisk",
+    iconBg: "bg-amber-50",
+    iconColor: "text-amber-600",
+  },
+];
+
+export const analyticsIssueStats: AnalyticsStat[] = [
+  {
+    id: "total-issues",
+    label: "Total Issues",
+    value: 134,
+    change: 14,
+    changeLabel: "vs last 30 days",
+    iconKey: "totalIssues",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-600",
+  },
+  {
+    id: "overdue",
+    label: "Overdue",
+    value: 12,
+    change: -4,
+    changeLabel: "vs last 30 days",
+    iconKey: "overdue",
+    iconBg: "bg-rose-50",
+    iconColor: "text-rose-600",
+  },
+  {
+    id: "cycle-time",
+    label: "Avg Cycle Time",
+    value: "4.6d",
+    change: -6,
+    changeLabel: "vs last 30 days",
+    iconKey: "cycleTime",
+    iconBg: "bg-violet-50",
+    iconColor: "text-violet-600",
+  },
+  {
+    id: "breaches",
+    label: "SLA Breaches",
+    value: 6,
+    change: -2,
+    changeLabel: "vs last 30 days",
+    iconKey: "bugIssues",
+    iconBg: "bg-orange-50",
+    iconColor: "text-orange-600",
+  },
+];
+
+export const analyticsTeamStats: AnalyticsStat[] = [
+  {
+    id: "members",
+    label: "Active Members",
+    value: 21,
+    change: 5,
+    changeLabel: "vs last 30 days",
+    iconKey: "activeMembers",
+    iconBg: "bg-teal-50",
+    iconColor: "text-teal-600",
+  },
+  {
+    id: "focus",
+    label: "Focus Time",
+    value: "30h",
+    change: 8,
+    changeLabel: "vs last 30 days",
+    iconKey: "focus",
+    iconBg: "bg-blue-50",
+    iconColor: "text-blue-600",
+  },
+  {
+    id: "throughput",
+    label: "Throughput",
+    value: "92 issues",
+    change: 6,
+    changeLabel: "vs last 30 days",
+    iconKey: "throughput",
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-600",
+  },
+  {
+    id: "cycle",
+    label: "Avg Cycle Time",
+    value: "4.2d",
+    change: -5,
+    changeLabel: "vs last 30 days",
+    iconKey: "cycleTime",
+    iconBg: "bg-violet-50",
+    iconColor: "text-violet-600",
+  },
+];
+
+export const analyticsDailyIssues: AnalyticsTrendPoint[] = [
+  { label: "May 14", created: 22, closed: 16, resolved: 12 },
+  { label: "May 15", created: 28, closed: 20, resolved: 14 },
+  { label: "May 16", created: 26, closed: 18, resolved: 16 },
+  { label: "May 17", created: 32, closed: 26, resolved: 18 },
+  { label: "May 18", created: 24, closed: 24, resolved: 14 },
+  { label: "May 19", created: 20, closed: 18, resolved: 10 },
+  { label: "May 20", created: 26, closed: 20, resolved: 14 },
+];
+
+export const analyticsStatusBreakdown: AnalyticsBreakdownItem[] = [
+  { name: "To Do", value: 34, color: "#3b82f6" },
+  { name: "In Progress", value: 27, color: "#f59e0b" },
+  { name: "In Review", value: 15, color: "#8b5cf6" },
+  { name: "Done", value: 42, color: "#22c55e" },
+  { name: "Blocked", value: 16, color: "#ef4444" },
+];
+
+export const analyticsPriorityBreakdown: AnalyticsBreakdownItem[] = [
+  { name: "High", value: 48, color: "#ef4444" },
+  { name: "Medium", value: 56, color: "#f59e0b" },
+  { name: "Low", value: 20, color: "#22c55e" },
+  { name: "Lowest", value: 10, color: "#9ca3af" },
+];
+
+export const analyticsProjects: AnalyticsProjectSummary[] = [
+  {
+    id: "p1",
+    name: "E-commerce Website",
+    key: "ECOM",
+    icon: "🛍️",
+    openIssues: 62,
+    completed: 18,
+    progress: 58,
+    velocity: 14,
+    health: "On Track",
+    risk: "Low",
+    barColor: "bg-emerald-500",
+  },
+  {
+    id: "p2",
+    name: "DevFlow API",
+    key: "DAPI",
+    icon: "</>",
+    openIssues: 28,
+    completed: 12,
+    progress: 62,
+    velocity: 11,
+    health: "On Track",
+    risk: "Low",
+    barColor: "bg-emerald-500",
+  },
+  {
+    id: "p3",
+    name: "Mobile App",
+    key: "MOB",
+    icon: "📱",
+    openIssues: 23,
+    completed: 8,
+    progress: 48,
+    velocity: 7,
+    health: "At Risk",
+    risk: "Medium",
+    barColor: "bg-amber-400",
+  },
+  {
+    id: "p4",
+    name: "Marketing Website",
+    key: "MKT",
+    icon: "🌐",
+    openIssues: 14,
+    completed: 5,
+    progress: 35,
+    velocity: 6,
+    health: "At Risk",
+    risk: "Medium",
+    barColor: "bg-amber-400",
+  },
+  {
+    id: "p5",
+    name: "Internal Dashboard",
+    key: "INT",
+    icon: "🧭",
+    openIssues: 7,
+    completed: 3,
+    progress: 30,
+    velocity: 3,
+    health: "Blocked",
+    risk: "High",
+    barColor: "bg-red-400",
+  },
+];
+
+export const analyticsTeamWorkload: AnalyticsTeamWorkload[] = [
+  {
+    id: "tw1",
+    name: "Karim Hossain",
+    initials: "KH",
+    color: "bg-sky-500",
+    inProgress: 12,
+    completed: 18,
+  },
+  {
+    id: "tw2",
+    name: "Rahim Ahmed",
+    initials: "RA",
+    color: "bg-emerald-500",
+    inProgress: 9,
+    completed: 14,
+  },
+  {
+    id: "tw3",
+    name: "Jannat Rahman",
+    initials: "JR",
+    color: "bg-pink-500",
+    inProgress: 8,
+    completed: 12,
+  },
+  {
+    id: "tw4",
+    name: "Sakib Al Hasan",
+    initials: "SH",
+    color: "bg-amber-500",
+    inProgress: 6,
+    completed: 10,
+  },
+  {
+    id: "tw5",
+    name: "Nusrat Jahan",
+    initials: "NJ",
+    color: "bg-orange-500",
+    inProgress: 4,
+    completed: 8,
+  },
+];
+
+export const analyticsSprintProgress: AnalyticsSprintProgress = {
+  sprint: "Sprint 2",
+  dateRange: "May 10 - May 24",
+  progress: 62,
+  completed: "31 / 50 issues",
+  daysLeft: "4 days",
+  status: "Active",
+};
+
+export const analyticsProjectVelocity: AnalyticsProjectVelocityPoint[] = [
+  { sprint: "Sprint 8", completed: 40, scope: 32 },
+  { sprint: "Sprint 9", completed: 48, scope: 45 },
+  { sprint: "Sprint 10", completed: 45, scope: 38 },
+  { sprint: "Sprint 11", completed: 55, scope: 52 },
+  { sprint: "Sprint 12", completed: 50, scope: 47 },
+];
+
+export const analyticsProjectRiskSummary: AnalyticsRiskSummary[] = [
+  { label: "On Track", value: 3, color: "text-emerald-600" },
+  { label: "At Risk", value: 2, color: "text-amber-600" },
+  { label: "Blocked", value: 1, color: "text-red-600" },
+];
+
+export const analyticsIssueAging: AnalyticsIssueAgingPoint[] = [
+  { bucket: "0-2 days", count: 28 },
+  { bucket: "3-7 days", count: 46 },
+  { bucket: "8-14 days", count: 33 },
+  { bucket: "15+ days", count: 27 },
+];
+
+export const analyticsIssueTriage: AnalyticsTriagePoint[] = [
+  { week: "Apr 22", triaged: 32, created: 28 },
+  { week: "Apr 29", triaged: 40, created: 34 },
+  { week: "May 6", triaged: 36, created: 30 },
+  { week: "May 13", triaged: 44, created: 38 },
+  { week: "May 20", triaged: 41, created: 35 },
+];
+
+export const analyticsSlaSummary = {
+  breached: 6,
+  atRisk: 14,
+  withinSla: 92,
+};
+
+export const analyticsSlaBreaches: AnalyticsSlaBreach[] = [
+  {
+    id: "sla1",
+    issueKey: "ECOM-97",
+    title: "Checkout regression in Safari",
+    priority: "HIGH",
+    daysOver: 3,
+  },
+  {
+    id: "sla2",
+    issueKey: "DAPI-42",
+    title: "Rate limit missing on search",
+    priority: "MEDIUM",
+    daysOver: 2,
+  },
+  {
+    id: "sla3",
+    issueKey: "MOB-18",
+    title: "Push notification queue stuck",
+    priority: "CRITICAL",
+    daysOver: 5,
+  },
+];
+
+export const analyticsTeamLeaderboard: AnalyticsTeamLeaderboard[] = [
+  {
+    id: "tl1",
+    name: "Karim Hossain",
+    role: "Developer",
+    completed: 32,
+    quality: 94,
+    trend: 6,
+  },
+  {
+    id: "tl2",
+    name: "Nusrat Jahan",
+    role: "Designer",
+    completed: 24,
+    quality: 91,
+    trend: 4,
+  },
+  {
+    id: "tl3",
+    name: "Rahim Ahmed",
+    role: "Developer",
+    completed: 28,
+    quality: 89,
+    trend: -2,
+  },
+  {
+    id: "tl4",
+    name: "Jannat Rahman",
+    role: "QA Engineer",
+    completed: 21,
+    quality: 92,
+    trend: 3,
+  },
+  {
+    id: "tl5",
+    name: "Sakib Al Hasan",
+    role: "Developer",
+    completed: 19,
+    quality: 87,
+    trend: 1,
+  },
+];
+
+export const analyticsTeamFocusTrend: AnalyticsFocusPoint[] = [
+  { week: "Apr 22", focusHours: 26, meetingHours: 10 },
+  { week: "Apr 29", focusHours: 28, meetingHours: 9 },
+  { week: "May 6", focusHours: 30, meetingHours: 8 },
+  { week: "May 13", focusHours: 27, meetingHours: 11 },
+  { week: "May 20", focusHours: 31, meetingHours: 7 },
+];
+
+export const analyticsReportLibrary: AnalyticsReport[] = [
+  {
+    id: "r1",
+    title: "Sprint Health Overview",
+    description: "Velocity, scope, and blockers across active sprints.",
+    category: "Delivery",
+    lastRun: "2 hours ago",
+    owner: "Munna Islam",
+    format: "PDF",
+  },
+  {
+    id: "r2",
+    title: "Weekly Issue Summary",
+    description: "Creation, resolution, and aging metrics by team.",
+    category: "Issues",
+    lastRun: "Yesterday",
+    owner: "Nusrat Jahan",
+    format: "CSV",
+  },
+  {
+    id: "r3",
+    title: "Release Readiness",
+    description: "Open risks, QA status, and change failure rate.",
+    category: "Quality",
+    lastRun: "3 days ago",
+    owner: "Karim Hossain",
+    format: "PDF",
+  },
+  {
+    id: "r4",
+    title: "Team Capacity Plan",
+    description: "Focus time, load, and staffing projections.",
+    category: "Team",
+    lastRun: "May 18",
+    owner: "Jannat Rahman",
+    format: "XLSX",
+  },
+];
+
+export const analyticsReportExports: AnalyticsExportRecord[] = [
+  {
+    id: "e1",
+    name: "Sprint Health Overview",
+    format: "PDF",
+    size: "1.4 MB",
+    createdAt: "May 20, 10:12 AM",
+    status: "Complete",
+  },
+  {
+    id: "e2",
+    name: "Weekly Issue Summary",
+    format: "CSV",
+    size: "840 KB",
+    createdAt: "May 19, 05:30 PM",
+    status: "Complete",
+  },
+  {
+    id: "e3",
+    name: "Release Readiness",
+    format: "PDF",
+    size: "1.1 MB",
+    createdAt: "May 18, 09:45 AM",
+    status: "Failed",
+  },
+  {
+    id: "e4",
+    name: "Team Capacity Plan",
+    format: "XLSX",
+    size: "640 KB",
+    createdAt: "May 17, 04:18 PM",
+    status: "Complete",
+  },
+];
+
+export const analyticsReportSchedules: AnalyticsSchedule[] = [
+  {
+    id: "s1",
+    name: "Monday Sprint Digest",
+    frequency: "Weekly",
+    nextRun: "May 27, 09:00 AM",
+    recipients: 12,
+  },
+  {
+    id: "s2",
+    name: "Issue Aging Alert",
+    frequency: "Daily",
+    nextRun: "May 22, 08:00 AM",
+    recipients: 6,
+  },
+  {
+    id: "s3",
+    name: "Release Health Snapshot",
+    frequency: "Bi-weekly",
+    nextRun: "Jun 1, 11:30 AM",
+    recipients: 9,
+  },
+];
+
+export const analyticsDoraMetrics: AnalyticsDoraMetric[] = [
+  {
+    id: "d1",
+    label: "Deployment Frequency",
+    value: "5.2",
+    change: 12,
+    target: "6 per week",
+    status: "Warn",
+  },
+  {
+    id: "d2",
+    label: "Lead Time for Changes",
+    value: "2.1",
+    change: -9,
+    target: "< 2 days",
+    status: "Warn",
+  },
+  {
+    id: "d3",
+    label: "Change Failure Rate",
+    value: "7.4%",
+    change: -3,
+    target: "< 10%",
+    status: "Good",
+  },
+  {
+    id: "d4",
+    label: "MTTR",
+    value: "3.6",
+    change: -11,
+    target: "< 4 hours",
+    status: "Good",
+  },
+];
+
+export const analyticsDoraTrend: AnalyticsDoraTrendPoint[] = [
+  { month: "Jan", deploys: 18, leadTime: 2.8, failureRate: 9.4, mttr: 4.6 },
+  { month: "Feb", deploys: 20, leadTime: 2.6, failureRate: 8.6, mttr: 4.2 },
+  { month: "Mar", deploys: 22, leadTime: 2.4, failureRate: 7.8, mttr: 3.9 },
+  { month: "Apr", deploys: 24, leadTime: 2.3, failureRate: 7.6, mttr: 3.7 },
+  { month: "May", deploys: 26, leadTime: 2.1, failureRate: 7.4, mttr: 3.6 },
 ];
 
 // ─── Team (Phase 1-3 mock data) ─────────────────────────────────────────────
@@ -1013,39 +1611,183 @@ import type {
 } from "@/types";
 
 export const mockCustomFields: CustomField[] = [
-  { id: "cf1", name: "Story Points", type: "number", required: false, applicableTo: "issue" },
-  { id: "cf2", name: "Sprint", type: "text", required: false, applicableTo: "issue" },
-  { id: "cf3", name: "Release Date", type: "date", required: false, applicableTo: "project" },
-  { id: "cf4", name: "Environment", type: "select", required: true, applicableTo: "issue" },
-  { id: "cf5", name: "Client Name", type: "text", required: false, applicableTo: "project" },
+  {
+    id: "cf1",
+    name: "Story Points",
+    type: "number",
+    required: false,
+    applicableTo: "issue",
+  },
+  {
+    id: "cf2",
+    name: "Sprint",
+    type: "text",
+    required: false,
+    applicableTo: "issue",
+  },
+  {
+    id: "cf3",
+    name: "Release Date",
+    type: "date",
+    required: false,
+    applicableTo: "project",
+  },
+  {
+    id: "cf4",
+    name: "Environment",
+    type: "select",
+    required: true,
+    applicableTo: "issue",
+  },
+  {
+    id: "cf5",
+    name: "Client Name",
+    type: "text",
+    required: false,
+    applicableTo: "project",
+  },
 ];
 
 export const mockAutomationRules: AutomationRule[] = [
-  { id: "ar1", name: "Auto-assign on create", trigger: "Issue created", action: "Assign to project lead", enabled: true },
-  { id: "ar2", name: "Close on merge", trigger: "PR merged", action: "Set issue status to Done", enabled: true },
-  { id: "ar3", name: "Overdue alert", trigger: "Due date passed", action: "Send notification to assignee", enabled: false },
-  { id: "ar4", name: "Move to In Review", trigger: "PR opened", action: "Set issue status to In Review", enabled: true },
+  {
+    id: "ar1",
+    name: "Auto-assign on create",
+    trigger: "Issue created",
+    action: "Assign to project lead",
+    enabled: true,
+  },
+  {
+    id: "ar2",
+    name: "Close on merge",
+    trigger: "PR merged",
+    action: "Set issue status to Done",
+    enabled: true,
+  },
+  {
+    id: "ar3",
+    name: "Overdue alert",
+    trigger: "Due date passed",
+    action: "Send notification to assignee",
+    enabled: false,
+  },
+  {
+    id: "ar4",
+    name: "Move to In Review",
+    trigger: "PR opened",
+    action: "Set issue status to In Review",
+    enabled: true,
+  },
 ];
 
 export const mockIntegrations: Integration[] = [
-  { id: "int1", name: "GitHub", icon: "github", connected: true, connectedAt: "2024-03-10", description: "Sync issues with GitHub repositories." },
-  { id: "int2", name: "Slack", icon: "slack", connected: true, connectedAt: "2024-04-01", description: "Get notifications in Slack channels." },
-  { id: "int3", name: "Jira", icon: "jira", connected: false, description: "Import and sync issues from Jira." },
-  { id: "int4", name: "Figma", icon: "figma", connected: false, description: "Attach Figma designs to issues." },
-  { id: "int5", name: "Notion", icon: "notion", connected: false, description: "Link Notion docs to projects." },
-  { id: "int6", name: "Google Drive", icon: "google", connected: true, connectedAt: "2024-05-15", description: "Attach files from Google Drive." },
+  {
+    id: "int1",
+    name: "GitHub",
+    icon: "github",
+    connected: true,
+    connectedAt: "2024-03-10",
+    description: "Sync issues with GitHub repositories.",
+  },
+  {
+    id: "int2",
+    name: "Slack",
+    icon: "slack",
+    connected: true,
+    connectedAt: "2024-04-01",
+    description: "Get notifications in Slack channels.",
+  },
+  {
+    id: "int3",
+    name: "Jira",
+    icon: "jira",
+    connected: false,
+    description: "Import and sync issues from Jira.",
+  },
+  {
+    id: "int4",
+    name: "Figma",
+    icon: "figma",
+    connected: false,
+    description: "Attach Figma designs to issues.",
+  },
+  {
+    id: "int5",
+    name: "Notion",
+    icon: "notion",
+    connected: false,
+    description: "Link Notion docs to projects.",
+  },
+  {
+    id: "int6",
+    name: "Google Drive",
+    icon: "google",
+    connected: true,
+    connectedAt: "2024-05-15",
+    description: "Attach files from Google Drive.",
+  },
 ];
 
 export const mockActiveSessions: ActiveSession[] = [
-  { id: "ses1", device: "MacBook Pro", browser: "Chrome 124", location: "Dhaka, BD", lastSeen: "Just now", isCurrent: true },
-  { id: "ses2", device: "iPhone 15", browser: "Safari 17", location: "Dhaka, BD", lastSeen: "2 hours ago", isCurrent: false },
-  { id: "ses3", device: "Windows PC", browser: "Edge 123", location: "Dhaka, BD", lastSeen: "Yesterday", isCurrent: false },
+  {
+    id: "ses1",
+    device: "MacBook Pro",
+    browser: "Chrome 124",
+    location: "Dhaka, BD",
+    lastSeen: "Just now",
+    isCurrent: true,
+  },
+  {
+    id: "ses2",
+    device: "iPhone 15",
+    browser: "Safari 17",
+    location: "Dhaka, BD",
+    lastSeen: "2 hours ago",
+    isCurrent: false,
+  },
+  {
+    id: "ses3",
+    device: "Windows PC",
+    browser: "Edge 123",
+    location: "Dhaka, BD",
+    lastSeen: "Yesterday",
+    isCurrent: false,
+  },
 ];
 
 export const mockInvoices: Invoice[] = [
-  { id: "inv1", date: "May 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
-  { id: "inv2", date: "Apr 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
-  { id: "inv3", date: "Mar 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
-  { id: "inv4", date: "Feb 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
-  { id: "inv5", date: "Jan 1, 2026", amount: "$29.00", plan: "Pro", status: "paid" },
+  {
+    id: "inv1",
+    date: "May 1, 2026",
+    amount: "$29.00",
+    plan: "Pro",
+    status: "paid",
+  },
+  {
+    id: "inv2",
+    date: "Apr 1, 2026",
+    amount: "$29.00",
+    plan: "Pro",
+    status: "paid",
+  },
+  {
+    id: "inv3",
+    date: "Mar 1, 2026",
+    amount: "$29.00",
+    plan: "Pro",
+    status: "paid",
+  },
+  {
+    id: "inv4",
+    date: "Feb 1, 2026",
+    amount: "$29.00",
+    plan: "Pro",
+    status: "paid",
+  },
+  {
+    id: "inv5",
+    date: "Jan 1, 2026",
+    amount: "$29.00",
+    plan: "Pro",
+    status: "paid",
+  },
 ];
